@@ -47,9 +47,10 @@ string getContactList = contactControler + "/getContactList/{0}";
 Console.WriteLine("Connect To API");
 
 ApiUser loginUser = new ApiUser();
-loginUser.EmailAddress = @"mike@jetnet.com"; // "demo@jetnet.com"
-loginUser.Password = @"mmaggi7277"; // "g846ii2v"
+loginUser.EmailAddress = @"demo@jetnet.com";
+loginUser.Password = @"g846ii2v";
 
+// login to api example
 responseAPILogin loginResponse = new();
 apiConnection customerAPI = new();
 string restURL = apiBase + authURL;
@@ -69,6 +70,7 @@ if (returnValue is not null)
 else
   Console.WriteLine(@"ERROR : USER {0} FAILED LOGIN", loginUser.EmailAddress.Trim());
 
+// get users account example
 string tmpString = string.Format(getAccountInfo, accessToken.Trim());
 restURL = apiBase + tmpString;
 returnValue = customerAPI.GetFromAPI(bearerToken, restURL, null).Result;
@@ -85,6 +87,7 @@ if (returnValue is not null)
 
 }
 
+// get aircraft example
 tmpString = string.Format(getAircraft, "202924", accessToken.Trim());
 restURL = apiBase + tmpString;
 returnValue = customerAPI.GetFromAPI(bearerToken, restURL, null).Result;
@@ -101,6 +104,7 @@ if (returnValue is not null)
 
 }
 
+// get company example
 tmpString = string.Format(getCompany, "7223", accessToken.Trim());
 restURL = apiBase + tmpString;
 returnValue = customerAPI.GetFromAPI(bearerToken, restURL, null).Result;
@@ -117,6 +121,7 @@ if (returnValue is not null)
 
 }
 
+// get contact example
 tmpString = string.Format(getContact, "345384", accessToken.Trim());
 restURL = apiBase + tmpString;
 returnValue = customerAPI.GetFromAPI(bearerToken, restURL, null).Result;
@@ -132,3 +137,9 @@ if (returnValue is not null)
     Console.WriteLine(@"ERROR : getContact {0}", contactResponse.responsestatus!.Trim());
 
 }
+
+// get aircraft list example
+
+// get copmpany list example
+
+// get contact list example
