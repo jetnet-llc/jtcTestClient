@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33213.308
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "jtcTestClient", "jtcTestClient.csproj", "{43818CC0-974D-45E7-98F5-BFC0D22F7223}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{43818CC0-974D-45E7-98F5-BFC0D22F7223}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43818CC0-974D-45E7-98F5-BFC0D22F7223}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43818CC0-974D-45E7-98F5-BFC0D22F7223}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43818CC0-974D-45E7-98F5-BFC0D22F7223}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {586E99EC-2ADB-4BAE-8D72-82D95E6D98DF}
+	EndGlobalSection
+EndGlobal
