@@ -1,12 +1,8 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace jtcTestClient
 {
@@ -73,32 +69,59 @@ namespace jtcTestClient
   #endregion
 
   #region aircraft_classes
-
-  public enum eMakeTypes : int
+  public class AcListOptions
   {
-    [Description("None")]
-    [JsonPropertyName("N")]
-    None = 0,
-
-    [Description("Jet Airliner")]
-    [JsonPropertyName("E")]
-    JetAirliner = 1,
-
-    [Description("Business Jet")]
-    [JsonPropertyName("J")]
-    BusinessJet = 2,
-
-    [Description("Turboprop")]
-    [JsonPropertyName("T")]
-    Turboprop = 3,
-
-    [Description("Piston")]
-    [JsonPropertyName("P")]
-    Piston = 4,
-
-    [Description("Turbine")]
-    [JsonPropertyName("U")]
-    Turbine = 5
+    public AcListOptions()
+    {
+      airframetype = eAirFrameTypes.None;
+      maketype = eMakeTypes.None;
+      sernbr = "";
+      regnbr = "";
+      modelid = 0;
+      makename = "";
+      isforsale = eYesNoIgnoreFlag.Ignore;
+      lifecycle = eLifeCycle.None;
+      basestate = null;
+      basestatename = null;
+      basecountry = "";
+      basecode = "";
+      actiondate = "";
+      companyid = 0;
+      contactid = 0;
+      yearmfr = 0;
+      yeardlv = 0;
+      aircraftchanges = false;
+      aclist = null;
+      modlist = null;
+    }
+    public eAirFrameTypes airframetype { get; set; }
+    public eMakeTypes maketype { get; set; }
+    public string sernbr { get; set; }
+    public string regnbr { get; set; }
+    public int modelid { get; set; }
+    public string makename { get; set; }
+    public eYesNoIgnoreFlag isforsale { get; set; }
+    public eLifeCycle lifecycle { get; set; }
+    public List<string>? basestate { get; set; }
+    public List<string>? basestatename { get; set; }
+    public string? basecountry { get; set; }
+    public string? basecode { get; set; }
+    public string actiondate { get; set; }
+    public int companyid { get; set; }
+    public int contactid { get; set; }
+    public int yearmfr { get; set; }
+    public int yeardlv { get; set; }
+    public bool aircraftchanges { get; set; }
+    public List<int>? aclist { get; set; }
+    public List<int>? modlist { get; set; }
+  }
+  public class responseAircraftList
+  {
+    public string? responseid { get; set; }
+    public string? responsestatus { get; set; }
+    public int count { get; set; }
+    public string? pageurl { get; set; }
+    public List<object>? aircraft { get; set; }
   }
   public class aircraftIdentClass
   {
@@ -436,6 +459,87 @@ namespace jtcTestClient
 
   #region company_classes
 
+  public class CompListOptions
+  {
+    public CompListOptions()
+    {
+      aircraftid = null;
+      name = "";
+      country = "";
+      city = "";
+      state = null;
+      statename = null;
+      bustype = null;
+      airframetype = eAirFrameTypes.None;
+      maketype = eMakeTypes.None;
+      modelid = null;
+      makename = null;
+      relationship = null;
+      isoperator = eYesNoIgnoreFlag.Ignore;
+      actiondate = "";
+      companychanges = false;
+      website = "";
+      complist = null;
+    }
+    public List<int>? aircraftid { get; set; }
+    public string name { get; set; }
+    public string country { get; set; }
+    public string city { get; set; }
+    public List<string>? state { get; set; }
+    public List<string>? statename { get; set; }
+    public List<string>? bustype { get; set; }
+    public eAirFrameTypes airframetype { get; set; }
+    public eMakeTypes maketype { get; set; }
+    public List<int>? modelid { get; set; }
+    public List<string>? makename { get; set; }
+    public List<string>? relationship { get; set; }
+    public eYesNoIgnoreFlag isoperator { get; set; }
+    public string actiondate { get; set; }
+    public bool companychanges { get; set; }
+    public string website { get; set; }
+    public List<int>? complist { get; set; }
+  }
+  public class companyListClass
+  {
+    public int companyid { get; set; }
+    public string name { get; set; }
+    public string altname { get; set; }
+    public string alttype { get; set; }
+    public string address1 { get; set; }
+    public string address2 { get; set; }
+    public string city { get; set; }
+    public string state { get; set; }
+    public string postcode { get; set; }
+    public string country { get; set; }
+    public string email { get; set; }
+    public string website { get; set; }
+
+    public companyListClass()
+    {
+
+      companyid = 0;
+      name = "";
+      altname = "";
+      alttype = "";
+      address1 = "";
+      address2 = "";
+      city = "";
+      state = "";
+      postcode = "";
+      country = "";
+      email = "";
+      website = "";
+
+    }
+  }
+  public class responseCompanyList
+  {
+    public string? responseid { get; set; }
+    public string? responsestatus { get; set; }
+    public int count { get; set; }
+    public string? pageurl { get; set; }
+    public List<companyListClass>? companies { get; set; }
+  }
   public class compRelatedClass
   {
     public int companyid { get; set; }
@@ -560,6 +664,78 @@ namespace jtcTestClient
 
   #region contact_classes
 
+  public class ContListOptions
+  {
+    public ContListOptions()
+    {
+      aircraftid = null;
+      companyid = 0;
+      companyname = "";
+      firstname = "";
+      lastname = "";
+      title = "";
+      email = "";
+      actiondate = "";
+      phonenumber = "";
+      contactchanges = false;
+      contlist = null;
+    }
+
+    public List<int>? aircraftid { get; set; }
+    public int companyid { get; set; }
+    public string companyname { get; set; }
+    public string firstname { get; set; }
+    public string lastname { get; set; }
+    public string title { get; set; }
+    public string email { get; set; }
+    public string actiondate { get; set; }
+    public string phonenumber { get; set; }
+    public bool contactchanges { get; set; }
+    public List<int>? contlist { get; set; }
+
+
+  }
+  public class contactListClass
+  {
+    public int contactid { get; set; }
+    public int companyid { get; set; }
+    public dynamic? companyname { get; set; }
+    public dynamic? sirname { get; set; }
+    public dynamic? firstname { get; set; }
+    public dynamic? middleinitial { get; set; }
+    public dynamic? lastname { get; set; }
+    public dynamic? suffix { get; set; }
+    public dynamic? title { get; set; }
+    public dynamic? email { get; set; }
+    public dynamic? phonenumber { get; set; }
+    public dynamic? actiondate { get; set; }
+
+    public contactListClass()
+    {
+
+      contactid = 0;
+      companyid = 0;
+      companyname = null;
+      sirname = null;
+      firstname = null;
+      middleinitial = null;
+      lastname = null;
+      suffix = null;
+      title = null;
+      email = null;
+      phonenumber = null;
+      actiondate = null;
+
+    }
+  }
+  public class responseContactList
+  {
+    public string? responseid { get; set; }
+    public string? responsestatus { get; set; }
+    public int count { get; set; }
+    public string? pageurl { get; set; }
+    public List<contactListClass>? contacts { get; set; }
+  }
   public class contactOtherClass
   {
     public int companyid { get; set; }
@@ -652,7 +828,88 @@ namespace jtcTestClient
   #endregion
 
   #region utility_classes
-  internal class responseAccountInfo
+
+  public enum eAirFrameTypes : int
+  {
+    [Description("None")]
+    [JsonPropertyName("N")]
+    None = 0,
+
+    [Description("Fixed Wing")]
+    [JsonPropertyName("F")]
+    FixedWing = 1,
+
+    [Description("Rotary")]
+    [JsonPropertyName("R")]
+    Rotary = 2,
+  }
+  public enum eMakeTypes : int
+  {
+    [Description("None")]
+    [JsonPropertyName("N")]
+    None = 0,
+
+    [Description("Jet Airliner")]
+    [JsonPropertyName("E")]
+    JetAirliner = 1,
+
+    [Description("Business Jet")]
+    [JsonPropertyName("J")]
+    BusinessJet = 2,
+
+    [Description("Turboprop")]
+    [JsonPropertyName("T")]
+    Turboprop = 3,
+
+    [Description("Piston")]
+    [JsonPropertyName("P")]
+    Piston = 4,
+
+    [Description("Turbine")]
+    [JsonPropertyName("U")]
+    Turbine = 5
+  }
+  public enum eYesNoIgnoreFlag : int
+  {
+    [Description("Ignore")]
+    [JsonPropertyName("I")]
+    Ignore = 0,
+
+    [Description("Yes")]
+    [JsonPropertyName("Y")]
+    Yes = 1,
+
+    [Description("No")]
+    [JsonPropertyName("N")]
+    No = 2
+  }
+  public enum eLifeCycle : int
+  {
+    [Description("None")]
+    [JsonPropertyName("N")]
+    None = 0,
+
+    [Description("In Production")]
+    [JsonPropertyName("P")]
+    InProduction = 1,
+
+    [Description("At Manufacturer")]
+    [JsonPropertyName("M")]
+    AtManufacturer = 2,
+
+    [Description("In Operation")]
+    [JsonPropertyName("O")]
+    InOperation = 3,
+
+    [Description("Retired")]
+    [JsonPropertyName("R")]
+    Retired = 4,
+
+    [Description("In Storage")]
+    [JsonPropertyName("S")]
+    InStorage = 5
+  }
+  public class responseAccountInfo
   {
     public string? responseid { get; set; }
     public string? responsestatus { get; set; }
@@ -662,6 +919,41 @@ namespace jtcTestClient
     public long subid { get; set; }
     public bool historyavailable { get; set; }
     public bool flightsavailable { get; set; }
+
+  }
+  public class modelClass
+  {
+    public int modelid { get; set; }
+    public eAirFrameTypes airframetype { get; set; }
+    public eMakeTypes maketype { get; set; }
+    public string make { get; set; }
+    public string model { get; set; }
+    public string manufacturer { get; set; }
+    public string weightclass { get; set; }
+    public string categorysize { get; set; }
+
+    public modelClass()
+    {
+
+      modelid = 0;
+      airframetype = eAirFrameTypes.None;
+      maketype = eMakeTypes.None;
+
+      make = "";
+      model = "";
+      manufacturer = "";
+
+      weightclass = "";
+      categorysize = "";
+
+    }
+  }
+  public class responseAcModels
+  {
+    public string? responseid { get; set; }
+    public string? responsestatus { get; set; }
+    public int count { get; set; }
+    public List<modelClass>? modellist { get; set; }
 
   }
   #endregion
