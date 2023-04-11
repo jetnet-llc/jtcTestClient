@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Net.Http.Headers;
-using System.Text;
+using System.Net.Http.Json;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace jtcTestClient
@@ -9,7 +9,7 @@ namespace jtcTestClient
   internal class apiConnection
   {
 
-    public async Task<string> GetFromAPI(string bearerToken, string urn, object? content, string method = "GET")
+    public async Task<string> GetFromAPI(string bearerToken, string urn, object? json, string method = "GET")
     {
       HttpClient client = new HttpClient();
       var httpResponseMessage = new HttpResponseMessage();
@@ -34,10 +34,8 @@ namespace jtcTestClient
           client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-        string JsonData = JsonConvert.SerializeObject(content);
-        StringContent RestContent = new StringContent(JsonData, Encoding.UTF8, "application/json");
+        httpResponseMessage = client.PostAsJsonAsync(urn, json).Result;
 
-        httpResponseMessage = client.PostAsync(urn, RestContent).Result;
       }
 
       string responseStatus = httpResponseMessage.StatusCode.ToString();
@@ -62,9 +60,9 @@ namespace jtcTestClient
   internal class responseAPILogin
   {
 
-    public string? BearerToken { get; set; }
+    public string? bearerToken { get; set; }
 
-    public string? ApiToken { get; set; }
+    public string? apiToken { get; set; }
   }
   #endregion
 
@@ -133,7 +131,7 @@ namespace jtcTestClient
     public string? model { get; set; }
     public int yearmfg { get; set; }
     public int yeardlv { get; set; }
-    public eMakeTypes? maketype { get; set; }
+    public string? maketype { get; set; }
     public string? weightclass { get; set; }
     public string? categorysize { get; set; }
     public string? sernbr { get; set; }
@@ -160,7 +158,7 @@ namespace jtcTestClient
       model = "";
       yearmfg = 0;
       yeardlv = 0;
-      maketype = eMakeTypes.None;
+      maketype = "";
       weightclass = "";
       categorysize = null;
       sernbr = "";
@@ -955,6 +953,16 @@ namespace jtcTestClient
     public int count { get; set; }
     public List<modelClass>? modellist { get; set; }
 
+  }
+
+  public class UpperCaseNamingPolicy : JsonNamingPolicy
+  {
+    public override string ConvertName(string name) => name.ToUpper();
+  }
+
+  public class LowerCaseNamingPolicy : JsonNamingPolicy
+  {
+    public override string ConvertName(string name) => name.ToLower();
   }
   #endregion
 }

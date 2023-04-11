@@ -1,12 +1,6 @@
 ﻿using jtcTestClient;
-using Newtonsoft.Json;
-using System.ComponentModel.Design;
-using System.Security.AccessControl;
-using System;
-using System.Diagnostics.Metrics;
-using System.Runtime.InteropServices.JavaScript;
-using System.Security.Cryptography.X509Certificates;
-using System.Xml.Linq;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 if (args.Length > 0)
 {
@@ -25,7 +19,6 @@ string accessToken = string.Empty;
 string bearerToken = string.Empty;
 
 const string TEST_API_BASE = "https://testcustomer.jetnetconnect.com/api/"; // test sales api
-const string LIVE_API_BASE = "https://customer.jetnetconnect.com/api/"; // test sales api
 
 string apiBase = ""; // base api path 
 
@@ -50,6 +43,18 @@ string getContactList = contactControler + "/getContactList/{0}";
 
 Console.WriteLine("Connect To API");
 
+
+
+var serializeOptions = new JsonSerializerOptions
+{
+  WriteIndented = true,
+  PropertyNameCaseInsensitive = true,
+  Converters =
+    {
+        new JsonStringEnumConverter(null, true)
+    }
+};
+
 ApiUser loginUser = new()
 {
   EmailAddress = @"demo@jetnet.com",
@@ -64,17 +69,17 @@ string returnValue = customerAPI.GetFromAPI("", restURL, loginUser, "PUT").Resul
 
 if (returnValue is not null)
 {
-  loginResponse = JsonConvert.DeserializeObject<responseAPILogin>(returnValue)!;
+  loginResponse = JsonSerializer.Deserialize<responseAPILogin>(returnValue)!;
 
   // bearer token and access token
-  accessToken = loginResponse.ApiToken!;
-  bearerToken = loginResponse.BearerToken!;
+  accessToken = loginResponse.apiToken!;
+  bearerToken = loginResponse.bearerToken!;
 
-  Console.WriteLine(@"USER {0} customer API Token {1}", loginUser.EmailAddress.Trim(), accessToken.Trim());
+  Console.WriteLine("\nUSER {0} customer API Token {1}", loginUser.EmailAddress.Trim(), accessToken.Trim());
 
 }
 else
-  Console.WriteLine(@"ERROR : USER {0} FAILED LOGIN", loginUser.EmailAddress.Trim());
+  Console.WriteLine("\nERROR : USER {0} FAILED LOGIN", loginUser.EmailAddress.Trim());
 
 // get users account example
 string tmpString = string.Format(getAccountInfo, accessToken.Trim());
@@ -84,12 +89,12 @@ responseAccountInfo accountResponse = new();
 
 if (returnValue is not null)
 {
-  accountResponse = JsonConvert.DeserializeObject<responseAccountInfo>(returnValue)!;
+  accountResponse = JsonSerializer.Deserialize<responseAccountInfo>(returnValue)!;
 
   if (accountResponse.responsestatus!.ToUpper().Contains(@"SUCCESS"))
-    Console.WriteLine(@"getAccountInfo {0}", returnValue.Trim());
+    Console.WriteLine("\ngetAccountInfo {0}", returnValue.Trim());
   else
-    Console.WriteLine(@"ERROR : getAccountInfo {0}", accountResponse.responsestatus!.Trim());
+    Console.WriteLine("\nERROR : getAccountInfo {0}", accountResponse.responsestatus!.Trim());
 
 }
 
@@ -101,12 +106,12 @@ responseAircraft aircraftResponse = new();
 
 if (returnValue is not null)
 {
-  aircraftResponse = JsonConvert.DeserializeObject<responseAircraft>(returnValue)!;
+  aircraftResponse = JsonSerializer.Deserialize<responseAircraft>(returnValue, JsonSerializerOptions.Default)!;
 
   if (aircraftResponse.responsestatus!.ToUpper().Contains(@"SUCCESS"))
-    Console.WriteLine(@"getAircraft {0}", returnValue.Trim());
+    Console.WriteLine("\ngetAircraft {0}", returnValue.Trim());
   else
-    Console.WriteLine(@"ERROR : getAircraft {0}", aircraftResponse.responsestatus!.Trim());
+    Console.WriteLine("\nERROR : getAircraft {0}", aircraftResponse.responsestatus!.Trim());
 
 }
 
@@ -118,12 +123,12 @@ responseCompany companyResponse = new();
 
 if (returnValue is not null)
 {
-  companyResponse = JsonConvert.DeserializeObject<responseCompany>(returnValue)!;
+  companyResponse = JsonSerializer.Deserialize<responseCompany>(returnValue)!;
 
   if (companyResponse.responsestatus!.ToUpper().Contains(@"SUCCESS"))
-    Console.WriteLine(@"getCompany {0}", returnValue.Trim());
+    Console.WriteLine("\ngetCompany {0}", returnValue.Trim());
   else
-    Console.WriteLine(@"ERROR : getCompany {0}", companyResponse.responsestatus!.Trim());
+    Console.WriteLine("\nERROR : getCompany {0}", companyResponse.responsestatus!.Trim());
 
 }
 
@@ -135,12 +140,12 @@ responseContact contactResponse = new();
 
 if (returnValue is not null)
 {
-  contactResponse = JsonConvert.DeserializeObject<responseContact>(returnValue)!;
+  contactResponse = JsonSerializer.Deserialize<responseContact>(returnValue)!;
 
   if (contactResponse.responsestatus!.ToUpper().Contains(@"SUCCESS"))
-    Console.WriteLine(@"getContact {0}", returnValue.Trim());
+    Console.WriteLine("\ngetContact {0}", returnValue.Trim());
   else
-    Console.WriteLine(@"ERROR : getContact {0}", contactResponse.responsestatus!.Trim());
+    Console.WriteLine("\nERROR : getContact {0}", contactResponse.responsestatus!.Trim());
 
 }
 
@@ -178,12 +183,12 @@ responseAircraftList aircraftList = new();
 
 if (returnValue is not null)
 {
-  aircraftList = JsonConvert.DeserializeObject<responseAircraftList>(returnValue)!;
+  aircraftList = JsonSerializer.Deserialize<responseAircraftList>(returnValue)!;
 
   if (aircraftList.responsestatus!.ToUpper().Contains(@"SUCCESS"))
-    Console.WriteLine(@"aircraft list {0}", returnValue.Trim());
+    Console.WriteLine("\naircraft list {0}", returnValue.Trim());
   else
-    Console.WriteLine(@"ERROR : aircraft list {0}", aircraftList.responsestatus!.Trim());
+    Console.WriteLine("\nERROR : aircraft list {0}", aircraftList.responsestatus!.Trim());
 
 }
 
@@ -200,7 +205,7 @@ tmpState.Add("PA");
 CompListOptions content1 = new()
 {
   aircraftid = null,
-  name = "",
+  name = "abc",
   country = "",
   city = "",
   state = tmpState,
@@ -223,12 +228,12 @@ responseCompanyList companyList = new();
 
 if (returnValue is not null)
 {
-  companyList = JsonConvert.DeserializeObject<responseCompanyList>(returnValue)!;
+  companyList = JsonSerializer.Deserialize<responseCompanyList>(returnValue)!;
 
   if (companyList.responsestatus!.ToUpper().Contains(@"SUCCESS"))
-    Console.WriteLine(@"company list {0}", returnValue.Trim());
+    Console.WriteLine("\ncompany list {0}", returnValue.Trim());
   else
-    Console.WriteLine(@"ERROR : company list {0}", companyList.responsestatus!.Trim());
+    Console.WriteLine("\nERROR : company list {0}", companyList.responsestatus!.Trim());
 
 }
 // get contact list example
@@ -256,10 +261,10 @@ responseContactList contactList = new();
 
 if (returnValue is not null)
 {
-  contactList = JsonConvert.DeserializeObject<responseContactList>(returnValue)!;
+  contactList = JsonSerializer.Deserialize<responseContactList>(returnValue)!;
 
   if (contactList.responsestatus!.ToUpper().Contains(@"SUCCESS"))
-    Console.WriteLine(@"contact list {0}", returnValue.Trim());
+    Console.WriteLine("\ncontact list {0}", returnValue.Trim());
   else
-    Console.WriteLine(@"ERROR : contact list {0}", contactList.responsestatus!.Trim());
+    Console.WriteLine("\nERROR : contact list {0}", contactList.responsestatus!.Trim());
 }
