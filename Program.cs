@@ -20,8 +20,7 @@ string bearerToken = string.Empty;
 
 const string TEST_API_BASE = "https://testcustomer.jetnetconnect.com/api/"; // test customer api
 const string LIVE_API_BASE = "https://customer.jetnetconnect.com/api/"; // test customer api
-//const string LOCAL_API_BASE = "https://www.jetnetcustomer.com/api/"; // local customer api (IIS)
-//const string LOCAL_API_BASE = "https://localhost:54501/api/"; // local customer api (IISExpress)
+
 
 string apiBase = ""; // base api path 
 
