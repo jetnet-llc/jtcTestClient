@@ -18,11 +18,14 @@ else
 string accessToken = string.Empty;
 string bearerToken = string.Empty;
 
-const string TEST_API_BASE = "https://testcustomer.jetnetconnect.com/api/"; // test sales api
+const string TEST_API_BASE = "https://testcustomer.jetnetconnect.com/api/"; // test customer api
+const string LIVE_API_BASE = "https://customer.jetnetconnect.com/api/"; // test customer api
+//const string LOCAL_API_BASE = "https://www.jetnetcustomer.com/api/"; // local customer api (IIS)
+//const string LOCAL_API_BASE = "https://localhost:54501/api/"; // local customer api (IISExpress)
 
 string apiBase = ""; // base api path 
 
-apiBase = TEST_API_BASE;
+apiBase = LIVE_API_BASE; // TEST_API_BASE;
 
 string authURL = "Admin/APILogin";
 string aircraftControler = "Aircraft";
@@ -34,6 +37,7 @@ string getAccountInfo = utilityControler + "/getAccountInfo/{0}";
 
 string getAircraft = aircraftControler + "/getAircraft/{0}/{1}";
 string getAircraftList = aircraftControler + "/getAircraftlist/{0}";
+string getAircraftHistoryList = aircraftControler + "/getAircraftlist/{0}";
 
 string getCompany = companyControler + "/getCompany/{0}/{1}";
 string getCompanyList = companyControler + "/getCompanyList/{0}";
@@ -87,7 +91,7 @@ restURL = apiBase + tmpString;
 returnValue = customerAPI.GetFromAPI(bearerToken, restURL, null).Result;
 responseAccountInfo accountResponse = new();
 
-if (returnValue is not null)
+if (returnValue is not null && !string.IsNullOrWhiteSpace(returnValue.Trim()))
 {
   accountResponse = JsonSerializer.Deserialize<responseAccountInfo>(returnValue)!;
 
@@ -97,174 +101,219 @@ if (returnValue is not null)
     Console.WriteLine("\nERROR : getAccountInfo {0}", accountResponse.responsestatus!.Trim());
 
 }
+else
+  Console.WriteLine("ERROR : getAccountInfo {0}", returnValue!.Trim());
 
 // get aircraft example
-tmpString = string.Format(getAircraft, "202924", accessToken.Trim());
-restURL = apiBase + tmpString;
-returnValue = customerAPI.GetFromAPI(bearerToken, restURL, null).Result;
-responseAircraft aircraftResponse = new();
+//tmpString = string.Format(getAircraft, "214067", accessToken.Trim());
+//restURL = apiBase + tmpString;
+//returnValue = customerAPI.GetFromAPI(bearerToken, restURL, null).Result;
+//responseAircraft aircraftResponse = new();
 
-if (returnValue is not null)
-{
-  aircraftResponse = JsonSerializer.Deserialize<responseAircraft>(returnValue, JsonSerializerOptions.Default)!;
+//if (returnValue is not null)
+//{
+//  aircraftResponse = JsonSerializer.Deserialize<responseAircraft>(returnValue, JsonSerializerOptions.Default)!;
 
-  if (aircraftResponse.responsestatus!.ToUpper().Contains(@"SUCCESS"))
-    Console.WriteLine("\ngetAircraft {0}", returnValue.Trim());
-  else
-    Console.WriteLine("\nERROR : getAircraft {0}", aircraftResponse.responsestatus!.Trim());
+//  if (aircraftResponse.responsestatus!.ToUpper().Contains(@"SUCCESS"))
+//    Console.WriteLine("\ngetAircraft {0}", returnValue.Trim());
+//  else
+//    Console.WriteLine("\nERROR : getAircraft {0}", aircraftResponse.responsestatus!.Trim());
 
-}
+//}
 
-// get company example
-tmpString = string.Format(getCompany, "7223", accessToken.Trim());
-restURL = apiBase + tmpString;
-returnValue = customerAPI.GetFromAPI(bearerToken, restURL, null).Result;
-responseCompany companyResponse = new();
+//// get company example
+//tmpString = string.Format(getCompany, "7223", accessToken.Trim());
+//restURL = apiBase + tmpString;
+//returnValue = customerAPI.GetFromAPI(bearerToken, restURL, null).Result;
+//responseCompany companyResponse = new();
 
-if (returnValue is not null)
-{
-  companyResponse = JsonSerializer.Deserialize<responseCompany>(returnValue)!;
+//if (returnValue is not null)
+//{
+//  companyResponse = JsonSerializer.Deserialize<responseCompany>(returnValue)!;
 
-  if (companyResponse.responsestatus!.ToUpper().Contains(@"SUCCESS"))
-    Console.WriteLine("\ngetCompany {0}", returnValue.Trim());
-  else
-    Console.WriteLine("\nERROR : getCompany {0}", companyResponse.responsestatus!.Trim());
+//  if (companyResponse.responsestatus!.ToUpper().Contains(@"SUCCESS"))
+//    Console.WriteLine("\ngetCompany {0}", returnValue.Trim());
+//  else
+//    Console.WriteLine("\nERROR : getCompany {0}", companyResponse.responsestatus!.Trim());
 
-}
+//}
 
-// get contact example
-tmpString = string.Format(getContact, "345384", accessToken.Trim());
-restURL = apiBase + tmpString;
-returnValue = customerAPI.GetFromAPI(bearerToken, restURL, null).Result;
-responseContact contactResponse = new();
+//// get contact example
+//tmpString = string.Format(getContact, "345384", accessToken.Trim());
+//restURL = apiBase + tmpString;
+//returnValue = customerAPI.GetFromAPI(bearerToken, restURL, null).Result;
+//responseContact contactResponse = new();
 
-if (returnValue is not null)
-{
-  contactResponse = JsonSerializer.Deserialize<responseContact>(returnValue)!;
+//if (returnValue is not null)
+//{
+//  contactResponse = JsonSerializer.Deserialize<responseContact>(returnValue)!;
 
-  if (contactResponse.responsestatus!.ToUpper().Contains(@"SUCCESS"))
-    Console.WriteLine("\ngetContact {0}", returnValue.Trim());
-  else
-    Console.WriteLine("\nERROR : getContact {0}", contactResponse.responsestatus!.Trim());
+//  if (contactResponse.responsestatus!.ToUpper().Contains(@"SUCCESS"))
+//    Console.WriteLine("\ngetContact {0}", returnValue.Trim());
+//  else
+//    Console.WriteLine("\nERROR : getContact {0}", contactResponse.responsestatus!.Trim());
 
-}
+//}
 
 // get aircraft list example
 
-tmpString = string.Format(getAircraftList, accessToken.Trim());
-restURL = apiBase + tmpString;
+//tmpString = string.Format(getAircraftList, accessToken.Trim());
+//restURL = apiBase + tmpString;
 
-AcListOptions content = new()
-{
-  airframetype = eAirFrameTypes.None,
-  maketype = eMakeTypes.None,
-  sernbr = "",
-  regnbr = "",
-  modelid = 0,
-  makename = "ASTRA",
-  isforsale = eYesNoIgnoreFlag.Ignore,
-  lifecycle = eLifeCycle.None,
-  basestate = null,
-  basestatename = null,
-  basecountry = "",
-  basecode = "",
-  actiondate = "",
-  companyid = 0,
-  contactid = 0,
-  yearmfr = 0,
-  yeardlv = 0,
-  aircraftchanges = false,
-  aclist = null,
-  modlist = null
-};
+//List<string> tmpStateName = new();
+//tmpStateName.Add("new york");
+////tmpState.Add("NJ");
+////tmpState.Add("PA");
 
-returnValue = customerAPI.GetFromAPI(bearerToken, restURL, content, "PUT").Result;
-responseAircraftList aircraftList = new();
+//AcListOptions content = new()
+//{
+//  airframetype = eAirFrameTypes.None,
+//  maketype = eMakeTypes.None,
+//  sernbr = "",
+//  regnbr = "",
+//  modelid = 0,
+//  make = "",
+//  forsale = null,
+//  lifecycle = eLifeCycle.InOperation,
+//  basestate = null,
+//  basestatename = tmpStateName,
+//  basecountry = "United States",
+//  basecode = "",
+//  actiondate = "",
+//  companyid = 0,
+//  contactid = 0,
+//  yearmfr = 0,
+//  yeardlv = 0,
+//  aircraftchanges = null,
+//  aclist = null,
+//  modlist = null
+//};
 
-if (returnValue is not null)
-{
-  aircraftList = JsonSerializer.Deserialize<responseAircraftList>(returnValue)!;
+//returnValue = customerAPI.GetFromAPI(bearerToken, restURL, content, "PUT").Result;
+//responseAircraftList aircraftList = new();
 
-  if (aircraftList.responsestatus!.ToUpper().Contains(@"SUCCESS"))
-    Console.WriteLine("\naircraft list {0}", returnValue.Trim());
-  else
-    Console.WriteLine("\nERROR : aircraft list {0}", aircraftList.responsestatus!.Trim());
+//if (returnValue is not null)
+//{
+//  aircraftList = JsonSerializer.Deserialize<responseAircraftList>(returnValue)!;
 
-}
+//  if (aircraftList.responsestatus!.ToUpper().Contains(@"SUCCESS"))
+//    Console.WriteLine("\naircraft list {0}", returnValue.Trim());
+//  else
+//    Console.WriteLine("\nERROR : aircraft list {0}", aircraftList.responsestatus!.Trim());
 
-// get copmpany list example
+//}
 
-tmpString = string.Format(getCompanyList, accessToken.Trim());
-restURL = apiBase + tmpString;
+//// get aircraft history list example
 
-List<string> tmpState = new();
-tmpState.Add("NY");
-tmpState.Add("NJ");
-tmpState.Add("PA");
+//tmpString = string.Format(getAircraftHistoryList, accessToken.Trim());
+//restURL = apiBase + tmpString;
 
-CompListOptions content1 = new()
-{
-  aircraftid = null,
-  name = "abc",
-  country = "",
-  city = "",
-  state = tmpState,
-  statename = null,
-  bustype = null,
-  airframetype = eAirFrameTypes.None,
-  maketype = eMakeTypes.None,
-  modelid = null,
-  makename = null,
-  relationship = null,
-  isoperator = eYesNoIgnoreFlag.Ignore,
-  actiondate = "",
-  companychanges = false,
-  website = "",
-  complist = null
-};
+//AcHistoryOptions content3 = new()
+//{
+//  aircraftid = 0,
+//  airframetype = eAirFrameTypes.None,
+//  maketype = eMakeTypes.None,
+//  modelid = 0,
+//  make = "",
+//  companyid = 0,
+//  isnewaircraft = eYesNoIgnoreFlag.Ignore,
+//  allrelationships = true,
+//  transtype = null,
+//  startdate = "",
+//  enddate = "",
+//  lastactionstartdate = "12-01-2008",
+//  lastactionenddate = "12-31-2008",
+//  aclist = null,
+//  modlist = null
+//};
 
-returnValue = customerAPI.GetFromAPI(bearerToken, restURL, content1, "PUT").Result;
-responseCompanyList companyList = new();
+//returnValue = customerAPI.GetFromAPI(bearerToken, restURL, content3, "PUT").Result;
+//responseAcHistory aircraftHistoryList = new();
 
-if (returnValue is not null)
-{
-  companyList = JsonSerializer.Deserialize<responseCompanyList>(returnValue)!;
+//if (returnValue is not null)
+//{
+//  aircraftHistoryList = JsonSerializer.Deserialize<responseAcHistory>(returnValue)!;
 
-  if (companyList.responsestatus!.ToUpper().Contains(@"SUCCESS"))
-    Console.WriteLine("\ncompany list {0}", returnValue.Trim());
-  else
-    Console.WriteLine("\nERROR : company list {0}", companyList.responsestatus!.Trim());
+//  if (aircraftHistoryList.responsestatus!.ToUpper().Contains(@"SUCCESS"))
+//    Console.WriteLine("\naircraft history list {0}", returnValue.Trim());
+//  else
+//    Console.WriteLine("\nERROR : aircraft history list {0}", aircraftHistoryList.responsestatus!.Trim());
 
-}
-// get contact list example
+//}
 
-tmpString = string.Format(getContactList, accessToken.Trim());
-restURL = apiBase + tmpString;
+//// get copmpany list example
 
-ContListOptions content2 = new()
-{
-  aircraftid = null,
-  companyid = 0,
-  companyname = "JETNET",
-  firstname = "",
-  lastname = "",
-  title = "",
-  email = "",
-  actiondate = "",
-  phonenumber = "",
-  contactchanges = false,
-  contlist = null
-};
+//tmpString = string.Format(getCompanyList, accessToken.Trim());
+//restURL = apiBase + tmpString;
 
-returnValue = customerAPI.GetFromAPI(bearerToken, restURL, content2, "PUT").Result;
-responseContactList contactList = new();
+//List<string> tmpState = new();
+//tmpState.Add("NY");
+//tmpState.Add("NJ");
+//tmpState.Add("PA");
 
-if (returnValue is not null)
-{
-  contactList = JsonSerializer.Deserialize<responseContactList>(returnValue)!;
+//CompListOptions content1 = new()
+//{
+//  aircraftid = null,
+//  name = "abc",
+//  country = "",
+//  city = "",
+//  state = tmpState,
+//  statename = null,
+//  bustype = null,
+//  airframetype = eAirFrameTypes.None,
+//  maketype = eMakeTypes.None,
+//  modelid = null,
+//  make = null,
+//  relationship = null,
+//  isoperator = "",
+//  actiondate = "",
+//  companychanges = "false",
+//  website = "",
+//  complist = null
+//};
 
-  if (contactList.responsestatus!.ToUpper().Contains(@"SUCCESS"))
-    Console.WriteLine("\ncontact list {0}", returnValue.Trim());
-  else
-    Console.WriteLine("\nERROR : contact list {0}", contactList.responsestatus!.Trim());
-}
+//returnValue = customerAPI.GetFromAPI(bearerToken, restURL, content1, "PUT").Result;
+//responseCompanyList companyList = new();
+
+//if (returnValue is not null)
+//{
+//  companyList = JsonSerializer.Deserialize<responseCompanyList>(returnValue)!;
+
+//  if (companyList.responsestatus!.ToUpper().Contains(@"SUCCESS"))
+//    Console.WriteLine("\ncompany list {0}", returnValue.Trim());
+//  else
+//    Console.WriteLine("\nERROR : company list {0}", companyList.responsestatus!.Trim());
+
+//}
+//// get contact list example
+
+//tmpString = string.Format(getContactList, accessToken.Trim());
+//restURL = apiBase + tmpString;
+
+//ContListOptions content2 = new()
+//{
+//  aircraftid = null,
+//  companyid = 0,
+//  companyname = "JETNET",
+//  firstname = "",
+//  lastname = "",
+//  title = "",
+//  email = "",
+//  actiondate = "",
+//  phonenumber = "",
+//  contactchanges = "false",
+//  contlist = null
+//};
+
+//returnValue = customerAPI.GetFromAPI(bearerToken, restURL, content2, "PUT").Result;
+//responseContactList contactList = new();
+
+//if (returnValue is not null)
+//{
+//  contactList = JsonSerializer.Deserialize<responseContactList>(returnValue)!;
+
+//  if (contactList.responsestatus!.ToUpper().Contains(@"SUCCESS"))
+//    Console.WriteLine("\ncontact list {0}", returnValue.Trim());
+//  else
+//    Console.WriteLine("\nERROR : contact list {0}", contactList.responsestatus!.Trim());
+//}
