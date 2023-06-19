@@ -37,7 +37,7 @@ string getAccountInfo = utilityControler + "/getAccountInfo/{0}";
 
 string getAircraft = aircraftControler + "/getAircraft/{0}/{1}";
 string getAircraftList = aircraftControler + "/getAircraftlist/{0}";
-string getAircraftHistoryList = aircraftControler + "/getAircraftlist/{0}";
+string getAircraftHistoryList = aircraftControler + "/getHistorylist/{0}";
 
 string getCompany = companyControler + "/getCompany/{0}/{1}";
 string getCompanyList = companyControler + "/getCompanyList/{0}";
