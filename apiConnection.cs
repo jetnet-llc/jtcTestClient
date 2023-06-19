@@ -11,12 +11,16 @@ namespace jtcTestClient
 
     public async Task<string> GetFromAPI(string bearerToken, string urn, object? json, string method = "GET")
     {
+      try
+      {
+
+  
       HttpClient client = new HttpClient();
       var httpResponseMessage = new HttpResponseMessage();
 
       if (method.ToUpper().Contains("GET"))
       {
-        if (!string.IsNullOrWhiteSpace(bearerToken.Trim()))
+        if (bearerToken is not null && !string.IsNullOrWhiteSpace(bearerToken.Trim()))
         {
           client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken);
           client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
@@ -27,7 +31,7 @@ namespace jtcTestClient
       }
       else
       {
-        if (!string.IsNullOrWhiteSpace(bearerToken.Trim()))
+        if (bearerToken is not null && !string.IsNullOrWhiteSpace(bearerToken.Trim()))
         {
           client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken);
           client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
@@ -43,8 +47,14 @@ namespace jtcTestClient
       if (responseStatus != System.Net.HttpStatusCode.OK.ToString())
         Console.WriteLine("ERROR : " + httpResponseMessage.StatusCode.ToString().Trim() + " - " + httpResponseMessage.ReasonPhrase!.ToString().Trim());
 
+        return await httpResponseMessage.Content.ReadAsStringAsync();
 
-      return await httpResponseMessage.Content.ReadAsStringAsync();
+      }
+      catch (Exception ex) 
+      { 
+        return ex.ToString();
+      }
+   
     }
 
   }
@@ -76,8 +86,8 @@ namespace jtcTestClient
       sernbr = "";
       regnbr = "";
       modelid = 0;
-      makename = "";
-      isforsale = eYesNoIgnoreFlag.Ignore;
+      make = "";
+      forsale = null; // eYesNoIgnoreFlag.Ignore;
       lifecycle = eLifeCycle.None;
       basestate = null;
       basestatename = null;
@@ -88,7 +98,7 @@ namespace jtcTestClient
       contactid = 0;
       yearmfr = 0;
       yeardlv = 0;
-      aircraftchanges = false;
+      aircraftchanges = null;
       aclist = null;
       modlist = null;
     }
@@ -97,8 +107,9 @@ namespace jtcTestClient
     public string sernbr { get; set; }
     public string regnbr { get; set; }
     public int modelid { get; set; }
-    public string makename { get; set; }
-    public eYesNoIgnoreFlag isforsale { get; set; }
+    public string make { get; set; }
+    //public eYesNoIgnoreFlag forsale { get; set; }
+    public string? forsale { get; set; }
     public eLifeCycle lifecycle { get; set; }
     public List<string>? basestate { get; set; }
     public List<string>? basestatename { get; set; }
@@ -109,7 +120,7 @@ namespace jtcTestClient
     public int contactid { get; set; }
     public int yearmfr { get; set; }
     public int yeardlv { get; set; }
-    public bool aircraftchanges { get; set; }
+    public string? aircraftchanges { get; set; }
     public List<int>? aclist { get; set; }
     public List<int>? modlist { get; set; }
   }
@@ -118,7 +129,7 @@ namespace jtcTestClient
     public string? responseid { get; set; }
     public string? responsestatus { get; set; }
     public int count { get; set; }
-    public string? pageurl { get; set; }
+    public string? pagelink { get; set; }
     public List<object>? aircraft { get; set; }
   }
   public class aircraftIdentClass
@@ -126,7 +137,7 @@ namespace jtcTestClient
     public int aircraftid { get; set; }
     public int modelid { get; set; }
     public dynamic? actiondate { get; set; }
-    public string? pageurl { get; set; }
+    public string? pagelink { get; set; }
     public string? make { get; set; }
     public string? model { get; set; }
     public int yearmfg { get; set; }
@@ -153,7 +164,7 @@ namespace jtcTestClient
       aircraftid = 0;
       modelid = 0;
       actiondate = null;
-      pageurl = "";
+      pagelink = "";
       make = "";
       model = "";
       yearmfg = 0;
@@ -453,6 +464,155 @@ namespace jtcTestClient
 
   }
 
+  public class AcHistoryOptions
+  {
+    public AcHistoryOptions()
+    {
+      aircraftid = 0;
+      airframetype = eAirFrameTypes.None;
+      maketype = eMakeTypes.None;
+      modelid = 0;
+      make = "";
+      companyid = 0;
+      isnewaircraft = eYesNoIgnoreFlag.Ignore;
+      allrelationships = true;
+      transtype = null;
+      startdate = "";
+      enddate = "";
+      aclist = null;
+      modlist = null;
+      lastactionstartdate = "";
+      lastactionenddate = "";
+    }
+
+    public int aircraftid { get; set; }
+    public eAirFrameTypes airframetype { get; set; }
+    public eMakeTypes maketype { get; set; }
+    public int modelid { get; set; }
+    public string make { get; set; }
+    public int companyid { get; set; }
+    public eYesNoIgnoreFlag isnewaircraft { get; set; }
+    public bool allrelationships { get; set; }
+    public List<eAcTransTypes>? transtype { get; set; }
+    public string startdate { get; set; }
+    public string enddate { get; set; }
+    public List<int>? aclist { get; set; }
+    public List<int>? modlist { get; set; }
+    public string lastactionstartdate { get; set; }
+    public string lastactionenddate { get; set; }
+  }
+  internal class aircraftHistoryListClass
+  {
+
+    [JsonPropertyName("aircraftid")]
+    public int ac_id { get; set; }
+
+    [JsonPropertyName("journalid")]
+    public int journ_id { get; set; }
+
+    [JsonPropertyName("modelid")]
+    public int amod_id { get; set; }
+
+    [JsonPropertyName("actiondate")]
+    public dynamic? ac_action_date { get; set; }
+
+    [JsonPropertyName("pagelink")]
+    public string ac_page_url { get; set; }
+
+    [JsonPropertyName("make")]
+    public string amod_make_name { get; set; }
+
+    [JsonPropertyName("model")]
+    public string amod_model_name { get; set; }
+
+    [JsonPropertyName("yearmfr")]
+    public int ac_mfr_year { get; set; }
+
+    [JsonPropertyName("yeardlv")]
+    public int ac_year { get; set; }
+
+    public eMakeTypes ac_maketype { get; set; }
+
+    [JsonPropertyName("weightclass")]
+    public string ac_weightclass { get; set; }
+
+    [JsonPropertyName("categorysize")]
+    public dynamic? ac_jniqcategory { get; set; }
+
+    [JsonPropertyName("sernbr")]
+    public string ac_ser_no_full { get; set; }
+
+    [JsonPropertyName("regnbr")]
+    public string ac_reg_no { get; set; }
+
+    [JsonPropertyName("transtype")]
+    public string? jcat_subcategory_name { get; set; }
+
+    [JsonPropertyName("transdate")]
+    public dynamic? journ_date { get; set; }
+
+    [JsonPropertyName("translastactiondate")]
+    public dynamic? translastactiondate { get; set; }
+
+    [JsonPropertyName("description")]
+    public string? journ_subject { get; set; }
+
+    [JsonPropertyName("customernote")]
+    public string? journ_customer_note { get; set; }
+
+    [JsonPropertyName("internaltrans")]
+    public bool journ_internal_trans_flag { get; set; }
+
+    [JsonPropertyName("newac")]
+    public string journ_newac_flag { get; set; }
+
+    [JsonPropertyName("usage")]
+    public string ac_usage { get; set; }
+
+    [JsonPropertyName("companyrelationships")]
+    public List<compReferenceClass>? ac_ref_companies { get; set; }
+
+    public aircraftHistoryListClass()
+    {
+      ac_id = 0;
+      journ_id = 0;
+      amod_id = 0;
+
+      ac_action_date = null;
+      ac_page_url = "";
+
+      amod_make_name = "";
+      amod_model_name = "";
+
+      ac_mfr_year = 0;
+      ac_year = 0;
+      ac_maketype = eMakeTypes.None;
+      ac_weightclass = "";
+      ac_jniqcategory = null;
+      ac_ser_no_full = "";
+      ac_reg_no = "";
+
+      jcat_subcategory_name = null;
+      journ_date = null;
+      translastactiondate = null;
+      journ_subject = null;
+      journ_customer_note = null;
+
+      journ_internal_trans_flag = false;
+      journ_newac_flag = "";
+      ac_usage = "";
+      ac_ref_companies = null;
+
+    }
+
+  }
+  internal class responseAcHistory
+  {
+    public string? responseid { get; set; }
+    public string? responsestatus { get; set; }
+    public int count { get; set; }
+    public List<aircraftHistoryListClass>? history { get; set; }
+  }
   #endregion
 
   #region company_classes
@@ -471,11 +631,11 @@ namespace jtcTestClient
       airframetype = eAirFrameTypes.None;
       maketype = eMakeTypes.None;
       modelid = null;
-      makename = null;
+      make = null;
       relationship = null;
-      isoperator = eYesNoIgnoreFlag.Ignore;
+      isoperator = null; // eYesNoIgnoreFlag.Ignore;
       actiondate = "";
-      companychanges = false;
+      companychanges = null;
       website = "";
       complist = null;
     }
@@ -489,11 +649,11 @@ namespace jtcTestClient
     public eAirFrameTypes airframetype { get; set; }
     public eMakeTypes maketype { get; set; }
     public List<int>? modelid { get; set; }
-    public List<string>? makename { get; set; }
+    public List<string>? make { get; set; }
     public List<string>? relationship { get; set; }
-    public eYesNoIgnoreFlag isoperator { get; set; }
+    public string? isoperator { get; set; }
     public string actiondate { get; set; }
-    public bool companychanges { get; set; }
+    public string? companychanges { get; set; }
     public string website { get; set; }
     public List<int>? complist { get; set; }
   }
@@ -535,7 +695,7 @@ namespace jtcTestClient
     public string? responseid { get; set; }
     public string? responsestatus { get; set; }
     public int count { get; set; }
-    public string? pageurl { get; set; }
+    public string? pagelink { get; set; }
     public List<companyListClass>? companies { get; set; }
   }
   public class compRelatedClass
@@ -604,7 +764,7 @@ namespace jtcTestClient
     public string agencytype { get; set; }
     public string email { get; set; }
     public string website { get; set; }
-    public string pageurl { get; set; }
+    public string pagelink { get; set; }
 
     public companyIdentClass()
     {
@@ -624,7 +784,7 @@ namespace jtcTestClient
       agencytype = "";
       email = "";
       website = "";
-      pageurl = "";
+      pagelink = "";
 
     }
   }
@@ -675,7 +835,7 @@ namespace jtcTestClient
       email = "";
       actiondate = "";
       phonenumber = "";
-      contactchanges = false;
+      contactchanges = null;
       contlist = null;
     }
 
@@ -688,7 +848,7 @@ namespace jtcTestClient
     public string email { get; set; }
     public string actiondate { get; set; }
     public string phonenumber { get; set; }
-    public bool contactchanges { get; set; }
+    public string? contactchanges { get; set; }
     public List<int>? contlist { get; set; }
 
 
@@ -731,7 +891,7 @@ namespace jtcTestClient
     public string? responseid { get; set; }
     public string? responsestatus { get; set; }
     public int count { get; set; }
-    public string? pageurl { get; set; }
+    public string? pagelink { get; set; }
     public List<contactListClass>? contacts { get; set; }
   }
   public class contactOtherClass
@@ -778,7 +938,7 @@ namespace jtcTestClient
     public dynamic? suffix { get; set; }
     public dynamic? title { get; set; }
     public dynamic? email { get; set; }
-    public string pageurl { get; set; }
+    public string pagelink { get; set; }
 
     public contactIdentClass()
     {
@@ -793,7 +953,7 @@ namespace jtcTestClient
       suffix = null;
       title = null;
       email = null;
-      pageurl = "";
+      pagelink = "";
 
     }
   }
@@ -906,6 +1066,60 @@ namespace jtcTestClient
     [Description("In Storage")]
     [JsonPropertyName("S")]
     InStorage = 5
+  }
+  public enum eAcTransTypes : int
+  {
+    [Description("None")]
+    [JsonPropertyName("N")]
+    None = 0,
+
+    [Description("Full Sale")]
+    [JsonPropertyName("P")]
+    FullSale = 1,
+
+    [Description("Fractional Sale")]
+    [JsonPropertyName("M")]
+    FractionalSale = 2,
+
+    [Description("Share Sale")]
+    [JsonPropertyName("O")]
+    ShareSale = 3,
+
+    [Description("Lease")]
+    [JsonPropertyName("R")]
+    Lease = 4,
+
+    [Description("Delivery Position")]
+    [JsonPropertyName("S")]
+    DeliveryPosition = 5,
+
+    [Description("Foreclosure")]
+    [JsonPropertyName("N")]
+    Foreclosure = 6,
+
+    [Description("Seizure")]
+    [JsonPropertyName("P")]
+    Seizure = 7,
+
+    [Description("Made Available")]
+    [JsonPropertyName("M")]
+    MadeAvailable = 8,
+
+    [Description("Off Market")]
+    [JsonPropertyName("O")]
+    OffMarket = 9,
+
+    [Description("Written Off")]
+    [JsonPropertyName("R")]
+    WrittenOff = 10,
+
+    [Description("Withdrawn from Use")]
+    [JsonPropertyName("S")]
+    WithdrawnfromUse = 11,
+
+    [Description("Withdrawn from Use - Stored")]
+    [JsonPropertyName("S")]
+    WithdrawnfromUseStored = 12
   }
   public class responseAccountInfo
   {
