@@ -21,7 +21,6 @@ string bearerToken = string.Empty;
 const string TEST_API_BASE = "https://testcustomer.jetnetconnect.com/api/"; // test customer api
 const string LIVE_API_BASE = "https://customer.jetnetconnect.com/api/"; // test customer api
 
-
 string apiBase = ""; // base api path 
 
 apiBase = LIVE_API_BASE; // TEST_API_BASE;
@@ -35,8 +34,8 @@ string utilityControler = "Utility";
 string getAccountInfo = utilityControler + "/getAccountInfo/{0}";
 
 string getAircraft = aircraftControler + "/getAircraft/{0}/{1}";
-string getAircraftList = aircraftControler + "/getAircraftlist/{0}";
-string getAircraftHistoryList = aircraftControler + "/getHistorylist/{0}";
+string getAircraftList = aircraftControler + "/getAircraftList/{0}";
+string getAircraftHistoryList = aircraftControler + "/getHistoryList/{0}";
 
 string getCompany = companyControler + "/getCompany/{0}/{1}";
 string getCompanyList = companyControler + "/getCompanyList/{0}";
@@ -45,7 +44,6 @@ string getContact = contactControler + "/getContact/{0}/{1}";
 string getContactList = contactControler + "/getContactList/{0}";
 
 Console.WriteLine("Connect To API");
-
 
 
 var serializeOptions = new JsonSerializerOptions
