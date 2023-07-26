@@ -102,19 +102,19 @@ namespace jtcTestClient
       aclist = null;
       modlist = null;
     }
+
     public eAirFrameTypes airframetype { get; set; }
     public eMakeTypes maketype { get; set; }
     public string sernbr { get; set; }
     public string regnbr { get; set; }
     public int modelid { get; set; }
     public string make { get; set; }
-    //public eYesNoIgnoreFlag forsale { get; set; }
-    public string? forsale { get; set; }
+    public string? forsale { get; set; } //eYesNoIgnoreFlag forsale { get; set; }
     public eLifeCycle lifecycle { get; set; }
     public List<string>? basestate { get; set; }
     public List<string>? basestatename { get; set; }
-    public string? basecountry { get; set; }
-    public string? basecode { get; set; }
+    public string basecountry { get; set; }
+    public string basecode { get; set; }
     public string actiondate { get; set; }
     public int companyid { get; set; }
     public int contactid { get; set; }
@@ -463,7 +463,6 @@ namespace jtcTestClient
     public aircraftClass? aircraft { get; set; }
 
   }
-
   public class AcHistoryOptions
   {
     public AcHistoryOptions()
@@ -483,6 +482,9 @@ namespace jtcTestClient
       modlist = null;
       lastactionstartdate = "";
       lastactionenddate = "";
+      ispreownedtrans = eYesNoIgnoreFlag.Ignore;
+      isretailtrans = eYesNoIgnoreFlag.Ignore;
+      isinternaltrans = eYesNoIgnoreFlag.Ignore;
     }
 
     public int aircraftid { get; set; }
@@ -500,6 +502,9 @@ namespace jtcTestClient
     public List<int>? modlist { get; set; }
     public string lastactionstartdate { get; set; }
     public string lastactionenddate { get; set; }
+    public eYesNoIgnoreFlag ispreownedtrans { get; set; }
+    public eYesNoIgnoreFlag isretailtrans { get; set; }
+    public eYesNoIgnoreFlag isinternaltrans { get; set; }
   }
   internal class aircraftHistoryListClass
   {
