@@ -14,47 +14,50 @@ namespace jtcTestClient
       try
       {
 
-  
-      HttpClient client = new HttpClient();
-      var httpResponseMessage = new HttpResponseMessage();
-
-      if (method.ToUpper().Contains("GET"))
-      {
-        if (bearerToken is not null && !string.IsNullOrWhiteSpace(bearerToken.Trim()))
+        HttpClient client = new HttpClient()
         {
-          client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken);
-          client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
-          client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+          Timeout = TimeSpan.FromSeconds(300) // set the time out to 300 seconds (5 minutes)
+        };
+
+        var httpResponseMessage = new HttpResponseMessage();
+
+        if (method.ToUpper().Contains("GET"))
+        {
+          if (bearerToken is not null && !string.IsNullOrWhiteSpace(bearerToken.Trim()))
+          {
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken);
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+          }
+
+          httpResponseMessage = client.GetAsync(urn).Result;
+        }
+        else
+        {
+          if (bearerToken is not null && !string.IsNullOrWhiteSpace(bearerToken.Trim()))
+          {
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken);
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+          }
+
+          httpResponseMessage = client.PostAsJsonAsync(urn, json).Result;
+
         }
 
-        httpResponseMessage = client.GetAsync(urn).Result;
-      }
-      else
-      {
-        if (bearerToken is not null && !string.IsNullOrWhiteSpace(bearerToken.Trim()))
-        {
-          client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken);
-          client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
-          client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-        }
+        string responseStatus = httpResponseMessage.StatusCode.ToString();
 
-        httpResponseMessage = client.PostAsJsonAsync(urn, json).Result;
-
-      }
-
-      string responseStatus = httpResponseMessage.StatusCode.ToString();
-
-      if (responseStatus != System.Net.HttpStatusCode.OK.ToString())
-        Console.WriteLine("ERROR : " + httpResponseMessage.StatusCode.ToString().Trim() + " - " + httpResponseMessage.ReasonPhrase!.ToString().Trim());
+        if (responseStatus != System.Net.HttpStatusCode.OK.ToString())
+          Console.WriteLine("ERROR : " + httpResponseMessage.StatusCode.ToString().Trim() + " - " + httpResponseMessage.ReasonPhrase!.ToString().Trim());
 
         return await httpResponseMessage.Content.ReadAsStringAsync();
 
       }
-      catch (Exception ex) 
-      { 
+      catch (Exception ex)
+      {
         return ex.ToString();
       }
-   
+
     }
 
   }
@@ -617,6 +620,312 @@ namespace jtcTestClient
     public string? responsestatus { get; set; }
     public int count { get; set; }
     public List<aircraftHistoryListClass>? history { get; set; }
+  }
+
+  internal class AcFlightDataOptions
+  {
+    public AcFlightDataOptions()
+    {
+      aircraftid = 0;
+      airframetype = eAirFrameTypes.None;
+      sernbr = "";
+      regnbr = "";
+      maketype = eMakeTypes.None;
+      modelid = 0;
+      make = "";
+      origin = "";
+      destination = "";
+      startdate = "";
+      enddate = "";
+      aclist = null;
+      modlist = null;
+      lastactionstartdate = "";
+      lastactionenddate = "";
+    }
+
+    public int aircraftid { get; set; }
+    public eAirFrameTypes airframetype { get; set; }
+    public string sernbr { get; set; }
+    public string regnbr { get; set; }
+    public eMakeTypes maketype { get; set; }
+    public int modelid { get; set; }
+    public string make { get; set; }
+    public string origin { get; set; }
+    public string destination { get; set; }
+    public string startdate { get; set; }
+    public string enddate { get; set; }
+    public List<int>? aclist { get; set; }
+    public List<int>? modlist { get; set; }
+    public string lastactionstartdate { get; set; }
+    public string lastactionenddate { get; set; }
+  }
+  internal class responseAcFlightData
+  {
+    public string? responseid { get; set; }
+    public string? responsestatus { get; set; }
+    public int count { get; set; }
+    public List<aircraftFightDataClass>? flightdata { get; set; }
+  }
+
+  internal class aircraftFightDataClass
+  {
+    // aircraft 
+    [JsonPropertyName("make")]
+    public string make_name { get; set; }
+
+    [JsonPropertyName("model")]
+    public string model_name { get; set; }
+
+    public eMakeTypes model_maketype { get; set; }
+
+    [JsonPropertyName("modelmfr")]
+    public string model_mfr { get; set; }
+
+    [JsonPropertyName("categorysize")]
+    public string model_category { get; set; }
+
+    [JsonPropertyName("modelicao")]
+    public string model_icao { get; set; }
+
+    [JsonPropertyName("modelid")]
+    public int model_id { get; set; }
+
+    [JsonPropertyName("yearmfr")]
+    public int ac_yearmfr { get; set; }
+
+    [JsonPropertyName("sernbr")]
+    public string ac_sernbr { get; set; }
+
+    [JsonPropertyName("regnbr")]
+    public string ac_regnbr { get; set; }
+
+    [JsonPropertyName("aircraftid")]
+    public int ac_id { get; set; }
+
+    // flight  
+    [JsonPropertyName("flightdate")]
+    public dynamic? ac_flightdate { get; set; }
+
+    [JsonPropertyName("flighttime")]
+    public dynamic? ac_flighttime { get; set; }
+
+    [JsonPropertyName("distance")]
+    public int ac_distance { get; set; }
+
+    [JsonPropertyName("estfuelburn")]
+    public decimal ac_estfuelburn { get; set; }
+
+    [JsonPropertyName("flightid")]
+    public string ac_flightid { get; set; }
+
+    // origin   
+    [JsonPropertyName("origin_date")]
+    public dynamic? ac_origin_date { get; set; }
+
+    [JsonPropertyName("origin_time")]
+    public dynamic? ac_origin_time { get; set; }
+
+    [JsonPropertyName("origin_aport_code")]
+    public string ac_origin_aport_code { get; set; }
+
+    [JsonPropertyName("origin_name")]
+    public string ac_origin_name { get; set; }
+
+    [JsonPropertyName("origin_city")]
+    public string ac_origin_city { get; set; }
+
+    [JsonPropertyName("origin_state")]
+    public dynamic? ac_origin_state { get; set; }
+
+    [JsonPropertyName("origin_country")]
+    public string ac_origin_country { get; set; }
+
+    [JsonPropertyName("origin_iata_code")]
+    public string ac_origin_iata_code { get; set; }
+
+    [JsonPropertyName("origin_icao_code")]
+    public string ac_origin_icao_code { get; set; }
+
+    [JsonPropertyName("origin_faaid_code")]
+    public string ac_origin_faaid_code { get; set; }
+
+    [JsonPropertyName("origin_latitude")]
+    public string ac_origin_latitude { get; set; }
+
+    [JsonPropertyName("origin_longitude")]
+    public string ac_origin_longitude { get; set; }
+
+    [JsonPropertyName("origin_continent")]
+    public string ac_origin_continent { get; set; }
+
+    [JsonPropertyName("origin_jetnet_id")]
+    public int ac_origin_id { get; set; }
+
+    // dest 
+    [JsonPropertyName("dest_date")]
+    public dynamic? ac_dest_date { get; set; }
+
+    [JsonPropertyName("dest_time")]
+    public dynamic? ac_dest_time { get; set; }
+
+    [JsonPropertyName("dest_aport_code")]
+    public string ac_dest_aport_code { get; set; }
+
+    [JsonPropertyName("dest_name")]
+    public string ac_dest_name { get; set; }
+
+    [JsonPropertyName("dest_city")]
+    public string ac_dest_city { get; set; }
+
+    [JsonPropertyName("dest_state")]
+    public dynamic? ac_dest_state { get; set; }
+
+    [JsonPropertyName("dest_country")]
+    public string ac_dest_country { get; set; }
+
+    [JsonPropertyName("dest_iata_code")]
+    public string ac_dest_iata_code { get; set; }
+
+    [JsonPropertyName("dest_icao_code")]
+    public string ac_dest_icao_code { get; set; }
+
+    [JsonPropertyName("dest_faaid_code")]
+    public string ac_dest_faaid_code { get; set; }
+
+    [JsonPropertyName("dest_latitude")]
+    public string ac_dest_latitude { get; set; }
+
+    [JsonPropertyName("dest_longitude")]
+    public string ac_dest_longitude { get; set; }
+
+    [JsonPropertyName("dest_continent")]
+    public string ac_dest_continent { get; set; }
+
+    [JsonPropertyName("dest_jetnet_id")]
+    public int ac_dest_id { get; set; }
+
+    // base 
+    [JsonPropertyName("base_name")]
+    public string ac_base_name { get; set; }
+
+    [JsonPropertyName("base_city")]
+    public string ac_base_city { get; set; }
+
+    [JsonPropertyName("base_state")]
+    public dynamic? ac_base_state { get; set; }
+
+    [JsonPropertyName("base_country")]
+    public string ac_base_country { get; set; }
+
+    [JsonPropertyName("base_iata_code")]
+    public string ac_base_iata_code { get; set; }
+
+    [JsonPropertyName("base_icao_code")]
+    public string ac_base_icao_code { get; set; }
+
+    [JsonPropertyName("base_faaid_code")]
+    public string ac_base_faaid_code { get; set; }
+
+    [JsonPropertyName("base_jetnet_id")]
+    public int ac_base_id { get; set; }
+
+    // operator
+    [JsonPropertyName("operator_name")]
+    public string ac_operator_name { get; set; }
+
+    [JsonPropertyName("operator_address1")]
+    public string ac_operator_address1 { get; set; }
+
+    [JsonPropertyName("operator_address2")]
+    public string ac_operator_address2 { get; set; }
+
+    [JsonPropertyName("operator_city")]
+    public string ac_operator_city { get; set; }
+
+    [JsonPropertyName("operator_state")]
+    public dynamic? ac_operator_state { get; set; }
+
+    [JsonPropertyName("operator_postcode")]
+    public dynamic? ac_operator_zipcode { get; set; }
+
+    [JsonPropertyName("operator_country")]
+    public string ac_operator_country { get; set; }
+
+    [JsonPropertyName("operator_web_address")]
+    public dynamic? ac_operator_web_address { get; set; }
+
+    [JsonPropertyName("operator_jetnet_id")]
+    public int ac_operator_id { get; set; }
+
+    public aircraftFightDataClass()
+    {
+      make_name = "";
+      model_name = "";
+      model_maketype = eMakeTypes.None;
+      model_mfr = "";
+      model_category = "";
+      model_icao = "";
+      model_id = 0;
+      ac_yearmfr = 0;
+      ac_sernbr = "";
+      ac_regnbr = "";
+      ac_id = 0;
+
+      ac_flightdate = null;
+      ac_flighttime = null;
+      ac_distance = 0;
+      ac_estfuelburn = 0;
+      ac_flightid = "";
+
+      ac_origin_date = null;
+      ac_origin_time = null;
+      ac_origin_aport_code = "";
+      ac_origin_name = "";
+      ac_origin_city = "";
+      ac_origin_state = null;
+      ac_origin_country = "";
+      ac_origin_iata_code = "";
+      ac_origin_icao_code = "";
+      ac_origin_faaid_code = "";
+      ac_origin_latitude = "";
+      ac_origin_longitude = "";
+      ac_origin_continent = "";
+      ac_origin_id = 0;
+
+      ac_dest_date = null;
+      ac_dest_time = null;
+      ac_dest_aport_code = "";
+      ac_dest_name = "";
+      ac_dest_city = "";
+      ac_dest_state = null;
+      ac_dest_country = "";
+      ac_dest_iata_code = "";
+      ac_dest_icao_code = "";
+      ac_dest_faaid_code = "";
+      ac_dest_latitude = "";
+      ac_dest_longitude = "";
+      ac_dest_continent = "";
+      ac_dest_id = 0;
+
+      ac_base_name = "";
+      ac_base_city = "";
+      ac_base_state = null;
+      ac_base_country = "";
+      ac_base_iata_code = "";
+      ac_base_icao_code = "";
+      ac_base_faaid_code = "";
+      ac_base_id = 0;
+
+      ac_operator_name = "";
+      ac_operator_address1 = "";
+      ac_operator_address2 = "";
+      ac_operator_city = "";
+      ac_operator_state = null;
+      ac_operator_zipcode = null;
+      ac_operator_country = "";
+      ac_operator_web_address = null;
+      ac_operator_id = 0;
+    }
   }
   #endregion
 
