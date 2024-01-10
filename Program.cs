@@ -20,21 +20,23 @@ Stopwatch timer = new Stopwatch();
 string accessToken = string.Empty;
 string bearerToken = string.Empty;
 
+//const string LIVE_API_BASE = "https://customer.jetnetconnect.com/api/"; // live customer api
 const string TEST_API_BASE = "https://testcustomer.jetnetconnect.com/api/"; // test customer api
-const string LIVE_API_BASE = "https://customer.jetnetconnect.com/api/"; // test customer api
-//const string LOCAL_API_BASE = "https://www.jetnetcustomer.com/api/"; // local customer api (IIS)
-//const string LOCAL_API_BASE = "https://localhost:54501/api/"; // local customer api (IISExpress)
+
+//const string LOCAL_API_BASE = "https://www.jetnet.connect.com/api/"; // local customer api (IIS)
+//const string LOCAL_API_BASE = "https://localhost:44382/api/"; // local customer api (IISExpress)
 
 
 string apiBase = ""; // base api path 
 
-apiBase = TEST_API_BASE; // TEST_API_BASE;
+apiBase = TEST_API_BASE; 
 
 string authURL = "Admin/APILogin";
 string aircraftControler = "Aircraft";
 string companyControler = "Company";
 string contactControler = "Contact";
-string utilityControler = "Utility";
+string utilityControler = "Utility"; //CustomExports
+string exportsControler = "CustomExports"; 
 
 string getAccountInfo = utilityControler + "/getAccountInfo/{0}";
 
@@ -43,6 +45,7 @@ string getAircraftList = aircraftControler + "/getAircraftList/{0}";
 string getAircraftHistoryList = aircraftControler + "/getHistoryList/{0}";
 string getAircraftFlightsList = aircraftControler + "/getFlightData/{0}";
 
+string getGulfstreamExport = exportsControler + "/getGulfstreamExport/{0}";
 
 string getCompany = companyControler + "/getCompany/{0}/{1}";
 string getCompanyList = companyControler + "/getCompanyList/{0}";
@@ -94,7 +97,9 @@ returnValue = null;
 // get users account example
 string tmpString = string.Format(getAccountInfo, accessToken.Trim());
 restURL = apiBase + tmpString;
+
 returnValue = customerAPI.GetFromAPI(bearerToken, restURL, null).Result;
+
 responseAccountInfo accountResponse = new();
 
 if (returnValue is not null && !string.IsNullOrWhiteSpace(returnValue.Trim()))
@@ -115,7 +120,9 @@ returnValue = null;
 // get aircraft example
 tmpString = string.Format(getAircraft, "214067", accessToken.Trim());
 restURL = apiBase + tmpString;
-//returnValue = customerAPI.GetFromAPI(bearerToken, restURL, null).Result;
+
+// returnValue = customerAPI.GetFromAPI(bearerToken, restURL, null).Result;
+
 responseAircraft aircraftResponse = new();
 
 if (returnValue is not null)
@@ -134,7 +141,9 @@ returnValue = null;
 // get company example
 tmpString = string.Format(getCompany, "7223", accessToken.Trim());
 restURL = apiBase + tmpString;
-//returnValue = customerAPI.GetFromAPI(bearerToken, restURL, null).Result;
+
+// returnValue = customerAPI.GetFromAPI(bearerToken, restURL, null).Result;
+
 responseCompany companyResponse = new();
 
 if (returnValue is not null)
@@ -153,7 +162,9 @@ returnValue = null;
 // get contact example
 tmpString = string.Format(getContact, "345384", accessToken.Trim());
 restURL = apiBase + tmpString;
-//returnValue = customerAPI.GetFromAPI(bearerToken, restURL, null).Result;
+
+// returnValue = customerAPI.GetFromAPI(bearerToken, restURL, null).Result;
+
 responseContact contactResponse = new();
 
 if (returnValue is not null)
@@ -185,13 +196,13 @@ AcListOptions content = new()
   maketype = eMakeTypes.None,
   sernbr = "",
   regnbr = "",
-  modelid = 0,
+  modelid = 1271,
   make = "",
   forsale = "true",
-  lifecycle = eLifeCycle.InOperation,
+  lifecycle = eLifeCycle.None,
   basestate = null,
-  basestatename = tmpStateName,
-  basecountry = "United States",
+  basestatename = null,
+  basecountry = "",
   basecode = "",
   actiondate = "",
   companyid = 0,
@@ -203,7 +214,7 @@ AcListOptions content = new()
   modlist = null
 };
 
-//returnValue = customerAPI.GetFromAPI(bearerToken, restURL, content, "PUT").Result;
+// returnValue = customerAPI.GetFromAPI(bearerToken, restURL, content, "PUT").Result;
 responseAircraftList aircraftList = new();
 
 if (returnValue is not null)
@@ -224,18 +235,23 @@ returnValue = null;
 tmpString = string.Format(getAircraftHistoryList, accessToken.Trim());
 restURL = apiBase + tmpString;
 
+List<eAcTransTypes> transtypes = new();
+transtypes.Add(eAcTransTypes.FullSale);
+transtypes.Add(eAcTransTypes.ShareSale);
+transtypes.Add(eAcTransTypes.Lease);
+
 AcHistoryOptions content3 = new()
 {
   aircraftid = 0,
   airframetype = eAirFrameTypes.None,
   maketype = eMakeTypes.None,
-  modelid = 1140,
-  make = "AIRBUS",
+  modelid = 1151,
+  make = "",
   companyid = 0,
   isnewaircraft = eYesNoIgnoreFlag.Yes,
   allrelationships = false,
-  transtype = null,
-  startdate = "01-01-2023",
+  transtype = transtypes,
+  startdate = "",
   enddate = "",
   lastactionstartdate = "",
   lastactionenddate = "",
@@ -243,10 +259,10 @@ AcHistoryOptions content3 = new()
   modlist = null,
   ispreownedtrans = eYesNoIgnoreFlag.Ignore,
   isretailtrans = eYesNoIgnoreFlag.Yes,
-  isinternaltrans = eYesNoIgnoreFlag.No
+  isinternaltrans = eYesNoIgnoreFlag.Ignore
 };
 
-//returnValue = customerAPI.GetFromAPI(bearerToken, restURL, content3, "PUT").Result;
+// returnValue = customerAPI.GetFromAPI(bearerToken, restURL, content3, "PUT").Result;
 responseAcHistory aircraftHistoryList = new();
 
 if (returnValue is not null)
@@ -278,8 +294,8 @@ AcFlightDataOptions content4 = new()
   make = "",
   origin = "",
   destination = "",
-  startdate = "01-01-2023", // 00:00:00",
-  enddate = "04-01-2023", // 06:00:00",
+  startdate = "08-01-2023", // 00:00:00",
+  enddate = "08-02-2023", // 06:00:00",
   aclist = null,
   modlist = null,
   lastactionstartdate = "",
@@ -289,7 +305,7 @@ AcFlightDataOptions content4 = new()
 timer.Start();
 Console.WriteLine("\nSTART : {0} get aircraft flights list et: {1:hh\\:mm\\:ss}", DateTime.Now.ToLongTimeString(), timer.Elapsed);
 
-returnValue = customerAPI.GetFromAPI(bearerToken, restURL, content4, "PUT").Result;
+//returnValue = customerAPI.GetFromAPI(bearerToken, restURL, content4, "PUT").Result;
 responseAcFlightData aircraftFlightsList = new();
 
 if (returnValue is not null)
@@ -301,11 +317,44 @@ if (returnValue is not null)
   else
     Console.WriteLine("\nERROR : aircraft flights list {0} et: {1:hh\\:mm\\:ss}", aircraftFlightsList.responsestatus!.Trim(), timer.Elapsed);
 
+  Console.WriteLine("\nEND get aircraft flights list {0} et: {1:hh\\:mm\\:ss}", aircraftFlightsList.flightdata!.Count.ToString(), timer.Elapsed);
+
 }
 
-Console.WriteLine("\nEND get aircraft flights list {0:hh\\:mm\\:ss}", timer.Elapsed);
+timer.Stop();
+
+Console.WriteLine("\nEND : {0} get aircraft flights list et: {1:hh\\:mm\\:ss}", DateTime.Now.ToLongTimeString(), timer.Elapsed);
+
+returnValue = null;
+
+// get gulfstream export example
+
+tmpString = string.Format(getGulfstreamExport, accessToken.Trim());
+restURL = apiBase + tmpString;
+
+timer.Start();
+
+Console.WriteLine("\nSTART : {0} get gulfstream export et: {1:hh\\:mm\\:ss}", DateTime.Now.ToLongTimeString(), timer.Elapsed);
+
+returnValue = customerAPI.GetFromAPI(bearerToken, restURL, null).Result;
+responseGulfstreamExport gulfstreamExport = new();
+
+if (returnValue is not null)
+{
+  gulfstreamExport = JsonSerializer.Deserialize<responseGulfstreamExport>(returnValue)!;
+
+  if (gulfstreamExport.responsestatus!.ToUpper().Contains(@"SUCCESS"))
+    Console.WriteLine("\nRETURN get gulfstream export {0} et: {1:hh\\:mm\\:ss}", returnValue.Trim(), timer.Elapsed);
+  else
+    Console.WriteLine("\nERROR : get gulfstream export {0} et: {1:hh\\:mm\\:ss}", gulfstreamExport.responsestatus!.Trim(), timer.Elapsed);
+
+  Console.WriteLine("\nEND get gulfstream export {0} et: {1:hh\\:mm\\:ss}", gulfstreamExport.exportaircraftcount!.ToString(), timer.Elapsed);
+
+}
 
 timer.Stop();
+
+Console.WriteLine("\nEND : {0} get gulfstream export et: {1:hh\\:mm\\:ss}", DateTime.Now.ToLongTimeString(), timer.Elapsed);
 
 returnValue = null;
 
@@ -340,7 +389,7 @@ CompListOptions content1 = new()
   complist = null
 };
 
-//returnValue = customerAPI.GetFromAPI(bearerToken, restURL, content1, "PUT").Result;
+// returnValue = customerAPI.GetFromAPI(bearerToken, restURL, content1, "PUT").Result;
 responseCompanyList companyList = new();
 
 if (returnValue is not null)
@@ -376,7 +425,7 @@ ContListOptions content2 = new()
   contlist = null
 };
 
-//returnValue = customerAPI.GetFromAPI(bearerToken, restURL, content2, "PUT").Result;
+// returnValue = customerAPI.GetFromAPI(bearerToken, restURL, content2, "PUT").Result;
 responseContactList contactList = new();
 
 if (returnValue is not null)
