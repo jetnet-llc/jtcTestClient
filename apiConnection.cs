@@ -16,7 +16,7 @@ namespace jtcTestClient
 
         HttpClient client = new HttpClient()
         {
-          Timeout = TimeSpan.FromSeconds(300) // set the time out to 300 seconds (5 minutes)
+          Timeout = TimeSpan.FromSeconds(2100) // set the time out to 2100 seconds (35 minutes)
         };
 
         var httpResponseMessage = new HttpResponseMessage();
@@ -621,7 +621,6 @@ namespace jtcTestClient
     public int count { get; set; }
     public List<aircraftHistoryListClass>? history { get; set; }
   }
-
   internal class AcFlightDataOptions
   {
     public AcFlightDataOptions()
@@ -666,7 +665,6 @@ namespace jtcTestClient
     public int count { get; set; }
     public List<aircraftFightDataClass>? flightdata { get; set; }
   }
-
   internal class aircraftFightDataClass
   {
     // aircraft 
@@ -926,6 +924,27 @@ namespace jtcTestClient
       ac_operator_web_address = null;
       ac_operator_id = 0;
     }
+  }
+  internal class responseGulfstreamExport
+  {
+    public string? responseid { get; set; }
+    public string? responsestatus { get; set; }
+    public int exportaircraftcount { get; set; }
+    public int aircraftaddcount { get; set; }
+    public List<string>? aircraftadd { get; set; }
+    public int companyaddcount { get; set; }
+    public List<string>? companyadd { get; set; }
+    public int contactaddcount { get; set; }
+    public List<string>? contactadd { get; set; }
+    public int phoneaddcount { get; set; }
+    public List<string>? phoneadd { get; set; }
+    public int aircraftdeletecount { get; set; }
+    public List<string>? aircraftdelete { get; set; }
+    public int companydeletecount { get; set; }
+    public List<string>? companydelete { get; set; }
+    public int contactdeletecount { get; set; }
+    public List<string>? contactdelete { get; set; }
+
   }
   #endregion
 
