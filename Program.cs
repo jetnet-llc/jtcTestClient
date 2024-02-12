@@ -44,11 +44,14 @@ string getAircraft = aircraftControler + "/getAircraft/{0}/{1}";
 string getAircraftList = aircraftControler + "/getAircraftList/{0}";
 string getAircraftHistoryList = aircraftControler + "/getHistoryList/{0}";
 string getAircraftFlightsList = aircraftControler + "/getFlightData/{0}";
+string getCondensedOwnerOperators = aircraftControler + "/getCondensedOwnerOperators/{0}";
 
 string getGulfstreamExport = exportsControler + "/getGulfstreamExport/{0}";
 
 string getCompany = companyControler + "/getCompany/{0}/{1}";
 string getCompanyList = companyControler + "/getCompanyList/{0}";
+
+string getAllCompanyInfo = companyControler + "/getAllCompanyInfo/{0}";
 
 string getContact = contactControler + "/getContact/{0}/{1}";
 string getContactList = contactControler + "/getContactList/{0}";
@@ -121,13 +124,13 @@ returnValue = null;
 tmpString = string.Format(getAircraft, "214067", accessToken.Trim());
 restURL = apiBase + tmpString;
 
-// returnValue = customerAPI.GetFromAPI(bearerToken, restURL, null).Result;
+//returnValue = customerAPI.GetFromAPI(bearerToken, restURL, null).Result;
 
 responseAircraft aircraftResponse = new();
 
 if (returnValue is not null)
 {
-  aircraftResponse = JsonSerializer.Deserialize<responseAircraft>(returnValue, JsonSerializerOptions.Default)!;
+  aircraftResponse = JsonSerializer.Deserialize<responseAircraft>(returnValue, serializeOptions)!;
 
   if (aircraftResponse.responsestatus!.ToUpper().Contains(@"SUCCESS"))
     Console.WriteLine("\ngetAircraft {0}", returnValue.Trim());
@@ -278,6 +281,59 @@ if (returnValue is not null)
 
 returnValue = null;
 
+// get Condensed Owner Operators report example
+
+tmpString = string.Format(getCondensedOwnerOperators, accessToken.Trim());
+restURL = apiBase + tmpString;
+
+AcListOptions content5 = new()
+{
+  airframetype = eAirFrameTypes.None,
+  maketype = eMakeTypes.None,
+  sernbr = "",
+  regnbr = "",
+  modelid = 0,
+  make = "GULFSTREAM",
+  forsale = "",
+  lifecycle = eLifeCycle.InOperation,
+  basestate = null,
+  basestatename = null,
+  basecountry = "",
+  basecode = "",
+  actiondate = "",
+  companyid = 0,
+  contactid = 0,
+  yearmfr = 0,
+  yeardlv = 0,
+  aircraftchanges = "",
+  aclist = null,
+  modlist = null
+};
+
+timer.Start();
+Console.WriteLine("\nSTART : {0} get Condensed Owner/Operator Report et: {1:hh\\:mm\\:ss}", DateTime.Now.ToLongTimeString(), timer.Elapsed);
+
+//returnValue = customerAPI.GetFromAPI(bearerToken, restURL, content5, "PUT").Result;
+responseCondensedOwnerOperatorReport condensedOwnerOperatorReport = new(); 
+
+if (returnValue is not null)
+{
+  condensedOwnerOperatorReport = JsonSerializer.Deserialize<responseCondensedOwnerOperatorReport>(returnValue, serializeOptions)!;
+
+  if (condensedOwnerOperatorReport.responsestatus!.ToUpper().Contains(@"SUCCESS"))
+    Console.WriteLine("\nRETURN Condensed Owner/Operator Report {0} et: {1:hh\\:mm\\:ss}", returnValue.Trim(), timer.Elapsed);
+  else
+    Console.WriteLine("\nERROR : Condensed Owner/Operator Report {0} et: {1:hh\\:mm\\:ss}", condensedOwnerOperatorReport.responsestatus!.Trim(), timer.Elapsed);
+
+  Console.WriteLine("\nEND get Condensed Owner/Operator Report {0} et: {1:hh\\:mm\\:ss}", condensedOwnerOperatorReport.aircraftowneroperators!.Count.ToString(), timer.Elapsed);
+
+}
+
+timer.Stop();
+Console.WriteLine("\nEND : {0} get Condensed Owner/Operator Report et: {1:hh\\:mm\\:ss}", DateTime.Now.ToLongTimeString(), timer.Elapsed);
+
+returnValue = null;
+
 // get aircraft flights list example
 
 tmpString = string.Format(getAircraftFlightsList, accessToken.Trim());
@@ -336,7 +392,7 @@ timer.Start();
 
 Console.WriteLine("\nSTART : {0} get gulfstream export et: {1:hh\\:mm\\:ss}", DateTime.Now.ToLongTimeString(), timer.Elapsed);
 
-returnValue = customerAPI.GetFromAPI(bearerToken, restURL, null).Result;
+//returnValue = customerAPI.GetFromAPI(bearerToken, restURL, null).Result;
 responseGulfstreamExport gulfstreamExport = new();
 
 if (returnValue is not null)
@@ -355,6 +411,37 @@ if (returnValue is not null)
 timer.Stop();
 
 Console.WriteLine("\nEND : {0} get gulfstream export et: {1:hh\\:mm\\:ss}", DateTime.Now.ToLongTimeString(), timer.Elapsed);
+
+ returnValue = null;
+
+// get all company info example
+
+tmpString = string.Format(getAllCompanyInfo, accessToken.Trim());
+restURL = apiBase + tmpString;
+
+timer.Start();
+
+Console.WriteLine("\nSTART : {0} getAllCompanyInfo et: {1:hh\\:mm\\:ss}", DateTime.Now.ToLongTimeString(), timer.Elapsed);
+
+returnValue = customerAPI.GetFromAPI(bearerToken, restURL, null).Result;
+responseAllCompanyInfo allCompanyInfo = new();
+
+if (returnValue is not null)
+{
+  allCompanyInfo = JsonSerializer.Deserialize<responseAllCompanyInfo>(returnValue)!;
+
+  if (allCompanyInfo.responsestatus!.ToUpper().Contains(@"SUCCESS"))
+    Console.WriteLine("\nRETURN getAllCompanyInfo {0} et: {1:hh\\:mm\\:ss}", returnValue.Trim(), timer.Elapsed);
+  else
+    Console.WriteLine("\nERROR : getAllCompanyInfo {0} et: {1:hh\\:mm\\:ss}", allCompanyInfo.responsestatus!.Trim(), timer.Elapsed);
+
+  Console.WriteLine("\nEND getAllCompanyInfo {0} et: {1:hh\\:mm\\:ss}", allCompanyInfo!.allcompanyinfo!.Count!.ToString(), timer.Elapsed);
+
+}
+
+timer.Stop();
+
+Console.WriteLine("\nEND : {0} getAllCompanyInfo et: {1:hh\\:mm\\:ss}", DateTime.Now.ToLongTimeString(), timer.Elapsed);
 
 returnValue = null;
 

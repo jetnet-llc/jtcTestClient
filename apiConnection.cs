@@ -1150,6 +1150,866 @@ namespace jtcTestClient
     public string? responsestatus { get; set; }
     public companyClass? company { get; set; }
   }
+  public class responseAllCompanyInfo
+  {
+    public string? responseid { get; set; }
+    public string? responsestatus { get; set; }
+    public int count { get; set; }
+    public List<companyIdentClass>? allcompanyinfo { get; set; }
+  }
+
+  public class responseCondensedOwnerOperatorReport
+  {
+    public string? responseid { get; set; }
+    public string? responsestatus { get; set; }
+    public int count { get; set; }
+    public List<condensedOwnerOperatorClass>? aircraftowneroperators { get; set; }
+  }
+
+  public class condensedOwnerOperatorClass
+  {
+
+    public condensedOwnerOperatorClass()
+    {
+      Acid = 0;
+      Acjournid = 0;
+      Amodairframetypecode = eAirFrameTypes.None;
+      Amodtypecode = eMakeTypes.None;
+      Amodmakename = null;
+      Amodmodelname = null;
+      Acmodelid = 0;
+      Acsernofull = null;
+      Acregno = null;
+      Regexpiresdate = null;
+
+      // NON Aerodex fields
+      Acstatus = null;
+      Acasking = null;
+      Acaskingprice = null;
+      Aclistdate = null;
+      Acpurchasedate = null;
+      Acupddate = null;
+
+      Comp1id = 0;
+      Comp1relation = null;
+      Comp1agencytype = null;
+      Comp1businesstype = null;
+      Comp1name = null;
+      Comp1altname = null;
+      Comp1email = null;
+      Comp1webaddress = null;
+      Comp1address1 = null;
+      Comp1address2 = null;
+      Comp1city = null;
+      Comp1state = null;
+      Comp1stateabbr = null;
+      Comp1postalcode = null;
+      Comp1country = null;
+      Comp1office = null;
+      Comp1fax = null;
+      Comp1mobile = null;
+      Contact1id = 0;
+      Contact1salutation = null;
+      Contact1firstname = null;
+      Contact1middle = null;
+      Contact1lastname = null;
+      Contact1suffix = null;
+      Contact1title = null;   // 01/13/2003 - by david d. cruger; added contact title
+      Contact1email = null;   // 01/29/2003 - by david d. cruger; added contact email
+      Contact1office = null;
+      Contact1fax = null;
+      Contact1mobile = null;
+
+      Comp2id = 0;
+      Comp2relation = null;
+      Comp2agencytype = null;
+      Comp2businesstype = null;
+      Comp2name = null;
+      Comp2altname = null;
+      Comp2email = null;
+      Comp2webaddress = null;
+      Comp2address1 = null;
+      Comp2address2 = null;
+      Comp2city = null;
+      Comp2state = null;
+      Comp2stateabbr = null;
+      Comp2postalcode = null;
+      Comp2country = null;
+      Comp2office = null;
+      Comp2fax = null;
+      Comp2mobile = null;
+      Contact2id = 0;
+      Contact2salutation = null;
+      Contact2firstname = null;
+      Contact2middle = null;
+      Contact2lastname = null;
+      Contact2suffix = null;
+      Contact2title = null;   // 02/23/2003 - by david d. cruger; added contact title
+      Contact2email = null;   // 02/29/2003 - by david d. cruger; added contact email
+      Contact2office = null;
+      Contact2fax = null;
+      Contact2mobile = null;
+
+      Chpilotcompid = 0;
+      Chpilotcomprelation = null;
+      Chpilotcompagencytype = null;
+      Chpilotcompbusinesstype = null;
+      Chpilotcompname = null;
+      Chpilotcompaltname = null;
+      Chpilotcompemail = null;
+      Chpilotcompwebaddress = null;
+      Chpilotcompaddress1 = null;
+      Chpilotcompaddress2 = null;
+      Chpilotcompcity = null;
+      Chpilotcompstate = null;
+      Chpilotcompstateabbr = null;
+      Chpilotcomppostalcode = null;
+      Chpilotcompcountry = null;
+      Chpilotcompoffice = null;
+      Chpilotcompfax = null;
+      Chpilotcompmobile = null;
+      Chpilotid = 0;
+      Chpilotsalutation = null;
+      Chpilotfirstname = null;
+      Chpilotmiddle = null;
+      Chpilotlastname = null;
+      Chpilotsuffix = null;
+      Chpilottitle = null;   // 01/13/2003 - by david d. cruger; added contact title
+      Chpilotemail = null;   // 01/29/2003 - by david d. cruger; added contact email
+      Chpilotoffice = null;
+      Chpilotfax = null;
+      Chpilotmobile = null;
+
+      // NON Aerodex fields
+      Excbrokercompid = 0;
+      Excbrokercomprelation = null;
+      Excbrokercompagencytype = null;
+      Excbrokercompbusinesstype = null;
+      Excbrokercompname = null;
+      Excbrokercompaltname = null;
+      Excbrokercompemail = null;
+      Excbrokercompwebaddress = null;
+      Excbrokercompaddress1 = null;
+      Excbrokercompaddress2 = null;
+      Excbrokercompcity = null;
+      Excbrokercompstate = null;
+      Excbrokercompstateabbr = null;
+      Excbrokercomppostalcode = null;
+      Excbrokercompcountry = null;
+      Excbrokercompoffice = null;
+      Excbrokercompfax = null;
+      Excbrokercompmobile = null;
+      Excbrokerid = 0;
+      Excbrokersalutation = null;
+      Excbrokerfirstname = null;
+      Excbrokermiddle = null;
+      Excbrokerlastname = null;
+      Excbrokersuffix = null;
+      Excbrokertitle = null;   // 01/13/2003 - by david d. cruger; added contact title
+      Excbrokeremail = null;   // 01/29/2003 - by david d. cruger; added contact email
+      Excbrokeroffice = null;
+      Excbrokerfax = null;
+      Excbrokermobile = null;
+
+      Acmfryear = 0;
+      Acyear = 0;
+      Acaportiatacode = null;
+      Acaporticaocode = null;
+      Acaportname = null;
+      Acaportcity = null;
+      Acaportstate = null;
+      Acaportcountry = null;
+
+      Acairframetothrs = 0;
+      Acairframetotlandings = 0;
+      Mxprog = null;
+      Acpassengercount = 0;
+      Acenginename = null;
+
+      Acengine1serno = null;
+      Acengine2serno = null;
+      Acengine3serno = null;
+      Acengine4serno = null;
+
+      Acengine1tothrs = 0;
+      Acengine2tothrs = 0;
+      Acengine3tothrs = 0;
+      Acengine4tothrs = 0;
+
+      Acengine1sohhrs = 0;
+      Acengine2sohhrs = 0;
+      Acengine3sohhrs = 0;
+      Acengine4sohhrs = 0;
+      Acmainteohbyname = null;
+
+      Acengine1shihrs = 0;
+      Acengine2shihrs = 0;
+      Acengine3shihrs = 0;
+      Acengine4shihrs = 0;
+      Acmainthotsbyname = null;
+
+      Acengine1tbohrs = 0;
+      Acengine2tbohrs = 0;
+      Acengine3tbohrs = 0;
+      Acengine4tbohrs = 0;
+
+      Acavionicsavpackage = null;
+      Acavionicsflightdir = null;
+      Acavionicsautopilot = null;
+      Acavionicsafis = null;
+      Acavionicsfms = null;
+      Acavionicsgps = null;
+      Acavionicsins = null;
+      Acavionicsirs = null;
+      Acmaintained = null;
+
+      Ifc1 = null;
+      Ifc1yn = null;
+      Ifc2 = null;
+      Ifc2yn = null;
+      Ifc3 = null;
+      Ifc3yn = null;
+      Ifc4 = null;
+      Ifc4yn = null;
+      Ifc5 = null;
+      Ifc5yn = null;
+      Ifc6 = null;
+      Ifc6yn = null;
+
+      Emp = null;
+      Actimesasofdate = null;
+      Acexteriormoyear = null;
+      Acinteriormoyear = null;
+
+      Aclifecyclestage = eLifeCycle.None;
+
+      Infavorof = null;
+      Docdate = null;
+      Doctype = null;
+      Docamount = null;
+
+      Lessor = null;
+
+    }
+
+    [JsonPropertyName("acid")]
+    public long Acid { get; set; }
+
+    [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
+    [JsonPropertyName("acjournid")]
+    public long Acjournid { get; set; }
+
+    [JsonPropertyName("airframetype")]
+    public eAirFrameTypes Amodairframetypecode { get; set; }
+
+    [JsonPropertyName("maketype")]
+    public eMakeTypes Amodtypecode { get; set; }
+
+    [JsonPropertyName("make")]
+    public dynamic? Amodmakename { get; set; }
+
+    [JsonPropertyName("model")]
+    public dynamic? Amodmodelname { get; set; }
+
+    [JsonPropertyName("modelid")]
+    public long Acmodelid { get; set; }
+
+    [JsonPropertyName("serialnbr")]
+    public dynamic? Acsernofull { get; set; }
+
+    [JsonPropertyName("regnbr")]
+    public dynamic? Acregno { get; set; }
+
+    [JsonPropertyName("regexpiresdate")]
+    public dynamic? Regexpiresdate { get; set; }
+    // NON Aerodex fields
+
+    [JsonPropertyName("status")]
+    public dynamic? Acstatus { get; set; }
+
+    [JsonPropertyName("asking")]
+    public dynamic? Acasking { get; set; }
+
+    [JsonPropertyName("askingamt")]
+    public dynamic? Acaskingprice { get; set; }
+
+    [JsonPropertyName("datelisted")]
+    public dynamic? Aclistdate { get; set; }
+
+    [JsonPropertyName("datepurchased")]
+    public dynamic? Acpurchasedate { get; set; }
+
+    [JsonPropertyName("datechanged")]
+    public dynamic? Acupddate { get; set; }
+
+
+    // comp 1 contact 1
+    [JsonPropertyName("comp1id")]
+    public long Comp1id { get; set; }
+
+    [JsonPropertyName("comp1relation")]
+    public dynamic?Comp1relation { get; set; }
+
+    [JsonPropertyName("comp1agencytype")]
+    public dynamic? Comp1agencytype { get; set; }
+
+    [JsonPropertyName("comp1businesstype")]
+    public dynamic? Comp1businesstype { get; set; }
+
+    [JsonPropertyName("comp1name")]
+    public dynamic? Comp1name { get; set; }
+
+    [JsonPropertyName("comp1altname")]
+    public dynamic? Comp1altname { get; set; }
+
+    [JsonPropertyName("comp1email")]
+    public dynamic? Comp1email { get; set; }
+
+    [JsonPropertyName("comp1webaddress")]
+    public dynamic? Comp1webaddress { get; set; }
+
+    [JsonPropertyName("comp1address1")]
+    public dynamic? Comp1address1 { get; set; }
+
+    [JsonPropertyName("comp1address2")]
+    public dynamic? Comp1address2 { get; set; }
+
+    [JsonPropertyName("comp1city")]
+    public dynamic? Comp1city { get; set; }
+
+    [JsonPropertyName("comp1state")]
+    public dynamic? Comp1state { get; set; }
+
+    [JsonPropertyName("comp1stateabbr")]
+    public dynamic? Comp1stateabbr { get; set; }
+
+    [JsonPropertyName("comp1postalcode")]
+    public dynamic? Comp1postalcode { get; set; }
+
+    [JsonPropertyName("comp1country")]
+    public dynamic? Comp1country { get; set; }
+
+    [JsonPropertyName("comp1office")]
+    public dynamic? Comp1office { get; set; }
+
+    [JsonPropertyName("comp1fax")]
+    public dynamic? Comp1fax { get; set; }
+
+    [JsonPropertyName("comp1mobile")]
+    public dynamic? Comp1mobile { get; set; }
+
+    [JsonPropertyName("contact1id")]
+    public long Contact1id { get; set; }
+
+    [JsonPropertyName("contact1salutation")]
+    public dynamic? Contact1salutation { get; set; }
+
+    [JsonPropertyName("contact1firstname")]
+    public dynamic? Contact1firstname { get; set; }
+
+    [JsonPropertyName("contact1middle")]
+    public dynamic? Contact1middle { get; set; }
+
+    [JsonPropertyName("contact1lastname")]
+    public dynamic? Contact1lastname { get; set; }
+
+    [JsonPropertyName("contact1suffix")]
+    public dynamic? Contact1suffix { get; set; }
+
+    [JsonPropertyName("contact1title")]
+    public dynamic? Contact1title { get; set; }   // 01/13/2003 - by david d. cruger; added contact title
+
+    [JsonPropertyName("contact1email")]
+    public dynamic? Contact1email { get; set; }   // 01/29/2003 - by david d. cruger; added contact email
+
+    [JsonPropertyName("contact1office")]
+    public dynamic? Contact1office { get; set; }
+
+    [JsonPropertyName("contact1fax")]
+    public dynamic? Contact1fax { get; set; }
+
+    [JsonPropertyName("contact1mobile")]
+    public dynamic? Contact1mobile { get; set; }
+
+    // comp 2 contatct 2
+    [JsonPropertyName("comp2id")]
+    public long Comp2id { get; set; }
+
+    [JsonPropertyName("comp2relation")]
+    public dynamic? Comp2relation { get; set; }
+
+    [JsonPropertyName("comp2agencytype")]
+    public dynamic? Comp2agencytype { get; set; }
+
+    [JsonPropertyName("comp2businesstype")]
+    public dynamic? Comp2businesstype { get; set; }
+
+    [JsonPropertyName("comp2name")]
+    public dynamic? Comp2name { get; set; }
+
+    [JsonPropertyName("comp2altname")]
+    public dynamic? Comp2altname { get; set; }
+
+    [JsonPropertyName("comp2email")]
+    public dynamic? Comp2email { get; set; }
+
+    [JsonPropertyName("comp2webaddress")]
+    public dynamic? Comp2webaddress { get; set; }
+
+    [JsonPropertyName("comp2address1")]
+    public dynamic? Comp2address1 { get; set; }
+
+    [JsonPropertyName("comp2address2")]
+    public dynamic? Comp2address2 { get; set; }
+
+    [JsonPropertyName("comp2city")]
+    public dynamic? Comp2city { get; set; }
+
+    [JsonPropertyName("comp2state")]
+    public dynamic? Comp2state { get; set; }
+
+    [JsonPropertyName("comp2stateabbr")]
+    public dynamic? Comp2stateabbr { get; set; }
+
+    [JsonPropertyName("comp2postalcode")]
+    public dynamic? Comp2postalcode { get; set; }
+
+    [JsonPropertyName("comp2country")]
+    public dynamic? Comp2country { get; set; }
+
+    [JsonPropertyName("comp2office")]
+    public dynamic? Comp2office { get; set; }
+
+    [JsonPropertyName("comp2fax")]
+    public dynamic? Comp2fax { get; set; }
+
+    [JsonPropertyName("comp2mobile")]
+    public dynamic? Comp2mobile { get; set; }
+
+    [JsonPropertyName("contact2id")]
+    public long Contact2id { get; set; }
+
+    [JsonPropertyName("contact2salutation")]
+    public dynamic? Contact2salutation { get; set; }
+
+    [JsonPropertyName("contact2firstname")]
+    public dynamic? Contact2firstname { get; set; }
+
+    [JsonPropertyName("contact2middle")]
+    public dynamic? Contact2middle { get; set; }
+
+    [JsonPropertyName("contact2lastname")]
+    public dynamic? Contact2lastname { get; set; }
+
+    [JsonPropertyName("contact2suffix")]
+    public dynamic? Contact2suffix { get; set; }
+
+    [JsonPropertyName("contact2title")]
+    public dynamic? Contact2title { get; set; }   // 02/23/2003 - by david d. cruger; added contact title
+
+    [JsonPropertyName("contact2email")]
+    public dynamic? Contact2email { get; set; }   // 02/29/2003 - by david d. cruger; added contact email
+
+    [JsonPropertyName("contact2office")]
+    public dynamic? Contact2office { get; set; }
+
+    [JsonPropertyName("contact2fax")]
+    public dynamic? Contact2fax { get; set; }
+
+    [JsonPropertyName("contact2mobile")]
+    public dynamic? Contact2mobile { get; set; }
+
+
+    // chief pilot comp and contact
+    [JsonPropertyName("chpilotcompid")]
+    public long Chpilotcompid { get; set; }
+
+    [JsonPropertyName("chpilotcomprelation")]
+    public dynamic? Chpilotcomprelation { get; set; }
+
+    [JsonPropertyName("chpilotcompagencytype")]
+    public dynamic? Chpilotcompagencytype { get; set; }
+
+    [JsonPropertyName("chpilotcompbusinesstype")]
+    public dynamic? Chpilotcompbusinesstype { get; set; }
+
+    [JsonPropertyName("chpilotcompname")]
+    public dynamic? Chpilotcompname { get; set; }
+
+    [JsonPropertyName("chpilotcompaltname")]
+    public dynamic? Chpilotcompaltname { get; set; }
+
+    [JsonPropertyName("chpilotcompemail")]
+    public dynamic? Chpilotcompemail { get; set; }
+
+    [JsonPropertyName("chpilotcompwebaddress")]
+    public dynamic? Chpilotcompwebaddress { get; set; }
+
+    [JsonPropertyName("chpilotcompaddress1")]
+    public dynamic? Chpilotcompaddress1 { get; set; }
+
+    [JsonPropertyName("chpilotcompaddress2")]
+    public dynamic? Chpilotcompaddress2 { get; set; }
+
+    [JsonPropertyName("chpilotcompcity")]
+    public dynamic? Chpilotcompcity { get; set; }
+
+    [JsonPropertyName("chpilotcompstate")]
+    public dynamic? Chpilotcompstate { get; set; }
+
+    [JsonPropertyName("chpilotcompstateabbr")]
+    public dynamic? Chpilotcompstateabbr { get; set; }
+
+    [JsonPropertyName("chpilotcomppostalcode")]
+    public dynamic? Chpilotcomppostalcode { get; set; }
+
+    [JsonPropertyName("chpilotcompcountry")]
+    public dynamic? Chpilotcompcountry { get; set; }
+
+    [JsonPropertyName("chpilotcompoffice")]
+    public dynamic? Chpilotcompoffice { get; set; }
+
+    [JsonPropertyName("chpilotcompfax")]
+    public dynamic? Chpilotcompfax { get; set; }
+
+    [JsonPropertyName("chpilotcompmobile")]
+    public dynamic? Chpilotcompmobile { get; set; }
+
+    [JsonPropertyName("chpilotid")]
+    public long Chpilotid { get; set; }
+
+    [JsonPropertyName("chpilotsalutation")]
+    public dynamic? Chpilotsalutation { get; set; }
+
+    [JsonPropertyName("chpilotfirstname")]
+    public dynamic? Chpilotfirstname { get; set; }
+
+    [JsonPropertyName("chpilotmiddle")]
+    public dynamic? Chpilotmiddle { get; set; }
+
+    [JsonPropertyName("chpilotlastname")]
+    public dynamic? Chpilotlastname { get; set; }
+
+    [JsonPropertyName("chpilotsuffix")]
+    public dynamic? Chpilotsuffix { get; set; }
+
+    [JsonPropertyName("chpilottitle")]
+    public dynamic? Chpilottitle { get; set; }   // 01/13/2003 - by david d. cruger; added contact title
+
+    [JsonPropertyName("chpilotemail")]
+    public dynamic? Chpilotemail { get; set; }   // 01/29/2003 - by david d. cruger; added contact email
+
+    [JsonPropertyName("chpilotoffice")]
+    public dynamic? Chpilotoffice { get; set; }
+
+    [JsonPropertyName("chpilotfax")]
+    public dynamic? Chpilotfax { get; set; }
+
+    [JsonPropertyName("chpilotmobile")]
+    public dynamic? Chpilotmobile { get; set; }
+
+
+    // NON Aerodex fields
+    [JsonPropertyName("excbrokercompid")]
+    public long Excbrokercompid { get; set; }
+
+    [JsonPropertyName("excbrokercomprelation")]
+    public dynamic? Excbrokercomprelation { get; set; }
+
+    [JsonPropertyName("excbrokercompagencytype")]
+    public dynamic? Excbrokercompagencytype { get; set; }
+
+    [JsonPropertyName("excbrokercompbusinesstype")]
+    public dynamic? Excbrokercompbusinesstype { get; set; }
+
+    [JsonPropertyName("excbrokercompname")]
+    public dynamic? Excbrokercompname { get; set; }
+
+    [JsonPropertyName("excbrokercompaltname")]
+    public dynamic? Excbrokercompaltname { get; set; }
+
+    [JsonPropertyName("excbrokercompemail")]
+    public dynamic? Excbrokercompemail { get; set; }
+
+    [JsonPropertyName("excbrokercompwebaddress")]
+    public dynamic? Excbrokercompwebaddress { get; set; }
+
+    [JsonPropertyName("excbrokercompaddress1")]
+    public dynamic? Excbrokercompaddress1 { get; set; }
+
+    [JsonPropertyName("excbrokercompaddress2")]
+    public dynamic? Excbrokercompaddress2 { get; set; }
+
+    [JsonPropertyName("excbrokercompcity")]
+    public dynamic? Excbrokercompcity { get; set; }
+
+    [JsonPropertyName("excbrokercompstate")]
+    public dynamic? Excbrokercompstate { get; set; }
+
+    [JsonPropertyName("excbrokercompstateabbr")]
+    public dynamic? Excbrokercompstateabbr { get; set; }
+
+    [JsonPropertyName("excbrokercomppostalcode")]
+    public dynamic? Excbrokercomppostalcode { get; set; }
+
+    [JsonPropertyName("excbrokercompcountry")]
+    public dynamic? Excbrokercompcountry { get; set; }
+
+    [JsonPropertyName("excbrokercompoffice")]
+    public dynamic? Excbrokercompoffice { get; set; }
+
+    [JsonPropertyName("excbrokercompfax")]
+    public dynamic? Excbrokercompfax { get; set; }
+
+    [JsonPropertyName("excbrokercompmobile")]
+    public dynamic? Excbrokercompmobile { get; set; }
+
+    [JsonPropertyName("excbrokerid")]
+    public long Excbrokerid { get; set; }
+
+    [JsonPropertyName("excbrokersalutation")]
+    public dynamic? Excbrokersalutation { get; set; }
+
+    [JsonPropertyName("excbrokerfirstname")]
+    public dynamic? Excbrokerfirstname { get; set; }
+
+    [JsonPropertyName("excbrokermiddle")]
+    public dynamic? Excbrokermiddle { get; set; }
+
+    [JsonPropertyName("excbrokerlastname")]
+    public dynamic? Excbrokerlastname { get; set; }
+
+    [JsonPropertyName("excbrokersuffix")]
+    public dynamic? Excbrokersuffix { get; set; }
+
+    [JsonPropertyName("excbrokertitle")]
+    public dynamic? Excbrokertitle { get; set; }   // 01/13/2003 - by david d. cruger; added contact title
+
+    [JsonPropertyName("excbrokeremail")]
+    public dynamic? Excbrokeremail { get; set; }   // 01/29/2003 - by david d. cruger; added contact email
+
+    [JsonPropertyName("excbrokeroffice")]
+    public dynamic? Excbrokeroffice { get; set; }
+
+    [JsonPropertyName("excbrokerfax")]
+    public dynamic? Excbrokerfax { get; set; }
+
+    [JsonPropertyName("excbrokermobile")]
+    public dynamic? Excbrokermobile { get; set; }
+
+
+    [JsonPropertyName("yearmfg")]
+    public int Acmfryear { get; set; }
+
+    [JsonPropertyName("yeardlv")]
+    public int Acyear { get; set; }
+
+    [JsonPropertyName("baseiata")]
+    public dynamic? Acaportiatacode { get; set; }
+
+    [JsonPropertyName("baseicao")]
+    public dynamic? Acaporticaocode { get; set; }
+
+    [JsonPropertyName("basename")]
+    public dynamic? Acaportname { get; set; }
+
+    [JsonPropertyName("basecity")]
+    public dynamic? Acaportcity { get; set; }
+
+    [JsonPropertyName("basestate")]
+    public dynamic? Acaportstate { get; set; }
+
+    [JsonPropertyName("basecountry")]
+    public dynamic? Acaportcountry { get; set; }
+
+
+    [JsonPropertyName("aftt")]
+    public int Acairframetothrs { get; set; }
+
+    [JsonPropertyName("landings")]
+    public int Acairframetotlandings { get; set; }
+
+    [JsonPropertyName("mxprog")]
+    public dynamic? Mxprog { get; set; }
+
+    [JsonPropertyName("passgr")]
+    public int Acpassengercount { get; set; }
+
+    [JsonPropertyName("engmodel")]
+    public dynamic? Acenginename { get; set; }
+
+
+
+    [JsonPropertyName("engsernbr1")]
+    public dynamic? Acengine1serno { get; set; }
+
+    [JsonPropertyName("engsernbr2")]
+    public dynamic? Acengine2serno { get; set; }
+
+    [JsonPropertyName("engsernbr3")]
+    public dynamic? Acengine3serno { get; set; }
+
+    [JsonPropertyName("engsernbr4")]
+    public dynamic? Acengine4serno { get; set; }
+
+
+    [JsonPropertyName("eng1tt")]
+    public int Acengine1tothrs { get; set; }
+
+    [JsonPropertyName("eng2tt")]
+    public int Acengine2tothrs { get; set; }
+
+    [JsonPropertyName("eng3tt")]
+    public int Acengine3tothrs { get; set; }
+
+    [JsonPropertyName("eng4tt")]
+    public int Acengine4tothrs { get; set; }
+
+
+    [JsonPropertyName("smoh1")]
+    public int Acengine1sohhrs { get; set; }
+
+    [JsonPropertyName("smoh2")]
+    public int Acengine2sohhrs { get; set; }
+
+    [JsonPropertyName("smoh3")]
+    public int Acengine3sohhrs { get; set; }
+
+    [JsonPropertyName("smoh4")]
+    public int Acengine4sohhrs { get; set; }
+
+    [JsonPropertyName("eohby")]
+    public dynamic? Acmainteohbyname { get; set; }
+
+
+    [JsonPropertyName("shot1")]
+    public int Acengine1shihrs { get; set; }
+
+    [JsonPropertyName("shot2")]
+    public int Acengine2shihrs { get; set; }
+
+    [JsonPropertyName("shot3")]
+    public int Acengine3shihrs { get; set; }
+
+    [JsonPropertyName("shot4")]
+    public int Acengine4shihrs { get; set; }
+
+    [JsonPropertyName("hotsby")]
+    public dynamic? Acmainthotsbyname { get; set; }
+
+
+    [JsonPropertyName("tbo1")]
+    public int Acengine1tbohrs { get; set; }
+
+    [JsonPropertyName("tbo2")]
+    public int Acengine2tbohrs { get; set; }
+
+    [JsonPropertyName("tbo3")]
+    public int Acengine3tbohrs { get; set; }
+
+    [JsonPropertyName("tbo4")]
+    public int Acengine4tbohrs { get; set; }
+
+
+    [JsonPropertyName("avionics")]
+    public dynamic? Acavionicsavpackage { get; set; }
+
+    [JsonPropertyName("fdir")]
+    public dynamic? Acavionicsflightdir { get; set; }
+
+    [JsonPropertyName("ap")]
+    public dynamic? Acavionicsautopilot { get; set; }
+
+    [JsonPropertyName("afis")]
+    public dynamic? Acavionicsafis { get; set; }
+
+    [JsonPropertyName("fms")]
+    public dynamic? Acavionicsfms { get; set; }
+
+    [JsonPropertyName("gps")]
+    public dynamic? Acavionicsgps { get; set; }
+
+    [JsonPropertyName("ins")]
+    public dynamic? Acavionicsins { get; set; }
+
+    [JsonPropertyName("irs")]
+    public dynamic? Acavionicsirs { get; set; }
+
+    [JsonPropertyName("maintained")]
+    public dynamic? Acmaintained { get; set; }
+
+
+    [JsonPropertyName("ifc1")]
+    public dynamic? Ifc1 { get; set; }
+
+    [JsonPropertyName("ifc1yn")]
+    public dynamic? Ifc1yn { get; set; }
+
+    [JsonPropertyName("ifc2")]
+    public dynamic? Ifc2 { get; set; }
+
+    [JsonPropertyName("ifc2yn")]
+    public dynamic? Ifc2yn { get; set; }
+
+    [JsonPropertyName("ifc3")]
+    public dynamic? Ifc3 { get; set; }
+
+    [JsonPropertyName("ifc3yn")]
+    public dynamic? Ifc3yn { get; set; }
+
+    [JsonPropertyName("ifc4")]
+    public dynamic? Ifc4 { get; set; }
+
+    [JsonPropertyName("ifc4yn")]
+    public dynamic? Ifc4yn { get; set; }
+
+    [JsonPropertyName("ifc5")]
+    public dynamic? Ifc5 { get; set; }
+
+    [JsonPropertyName("ifc5yn")]
+    public dynamic? Ifc5yn { get; set; }
+
+    [JsonPropertyName("ifc6")]
+    public dynamic? Ifc6 { get; set; }
+
+    [JsonPropertyName("ifc6yn")]
+    public dynamic? Ifc6yn { get; set; }
+
+
+    [JsonPropertyName("emp")]
+    public dynamic? Emp { get; set; }
+
+    [JsonPropertyName("tcdate")]
+    public dynamic? Actimesasofdate { get; set; }
+
+    [JsonPropertyName("extyr")]
+    public dynamic? Acexteriormoyear { get; set; }
+
+    [JsonPropertyName("intyr")]
+    public dynamic? Acinteriormoyear { get; set; }
+
+
+    [JsonPropertyName("lifecycle")]
+    public eLifeCycle Aclifecyclestage { get; set; }
+
+
+    [JsonPropertyName("infavorof")]
+    public dynamic? Infavorof { get; set; }
+
+    [JsonPropertyName("docdate")]
+    public dynamic? Docdate { get; set; }
+
+    [JsonPropertyName("doctype")]
+    public dynamic? Doctype { get; set; }
+
+    [JsonPropertyName("docamount")]
+    public dynamic? Docamount { get; set; }
+
+
+    [JsonPropertyName("lessor")]
+    public dynamic? Lessor { get; set; }
+
+  }
 
   #endregion
 
