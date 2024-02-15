@@ -29,14 +29,14 @@ const string TEST_API_BASE = "https://testcustomer.jetnetconnect.com/api/"; // t
 
 string apiBase = ""; // base api path 
 
-apiBase = TEST_API_BASE; 
+apiBase = TEST_API_BASE;
 
 string authURL = "Admin/APILogin";
 string aircraftControler = "Aircraft";
 string companyControler = "Company";
 string contactControler = "Contact";
 string utilityControler = "Utility"; //CustomExports
-string exportsControler = "CustomExports"; 
+string exportsControler = "CustomExports";
 
 string getAccountInfo = utilityControler + "/getAccountInfo/{0}";
 
@@ -288,33 +288,15 @@ restURL = apiBase + tmpString;
 
 AcListOptions content5 = new()
 {
-  airframetype = eAirFrameTypes.None,
-  maketype = eMakeTypes.None,
-  sernbr = "",
-  regnbr = "",
-  modelid = 0,
   make = "GULFSTREAM",
-  forsale = "",
-  lifecycle = eLifeCycle.InOperation,
-  basestate = null,
-  basestatename = null,
-  basecountry = "",
-  basecode = "",
-  actiondate = "",
-  companyid = 0,
-  contactid = 0,
-  yearmfr = 0,
-  yeardlv = 0,
-  aircraftchanges = "",
-  aclist = null,
-  modlist = null
+  lifecycle = eLifeCycle.InOperation
 };
 
 timer.Start();
 Console.WriteLine("\nSTART : {0} get Condensed Owner/Operator Report et: {1:hh\\:mm\\:ss}", DateTime.Now.ToLongTimeString(), timer.Elapsed);
 
-//returnValue = customerAPI.GetFromAPI(bearerToken, restURL, content5, "PUT").Result;
-responseCondensedOwnerOperatorReport condensedOwnerOperatorReport = new(); 
+returnValue = customerAPI.GetFromAPI(bearerToken, restURL, content5, "PUT").Result;
+responseCondensedOwnerOperatorReport condensedOwnerOperatorReport = new();
 
 if (returnValue is not null)
 {
@@ -358,6 +340,7 @@ AcFlightDataOptions content4 = new()
   lastactionenddate = ""
 };
 
+timer.Reset();
 timer.Start();
 Console.WriteLine("\nSTART : {0} get aircraft flights list et: {1:hh\\:mm\\:ss}", DateTime.Now.ToLongTimeString(), timer.Elapsed);
 
@@ -388,11 +371,12 @@ returnValue = null;
 tmpString = string.Format(getGulfstreamExport, accessToken.Trim());
 restURL = apiBase + tmpString;
 
+timer.Reset();
 timer.Start();
 
 Console.WriteLine("\nSTART : {0} get gulfstream export et: {1:hh\\:mm\\:ss}", DateTime.Now.ToLongTimeString(), timer.Elapsed);
 
-//returnValue = customerAPI.GetFromAPI(bearerToken, restURL, null).Result;
+returnValue = customerAPI.GetFromAPI(bearerToken, restURL, null).Result;
 responseGulfstreamExport gulfstreamExport = new();
 
 if (returnValue is not null)
@@ -412,13 +396,14 @@ timer.Stop();
 
 Console.WriteLine("\nEND : {0} get gulfstream export et: {1:hh\\:mm\\:ss}", DateTime.Now.ToLongTimeString(), timer.Elapsed);
 
- returnValue = null;
+returnValue = null;
 
 // get all company info example
 
 tmpString = string.Format(getAllCompanyInfo, accessToken.Trim());
 restURL = apiBase + tmpString;
 
+timer.Reset();
 timer.Start();
 
 Console.WriteLine("\nSTART : {0} getAllCompanyInfo et: {1:hh\\:mm\\:ss}", DateTime.Now.ToLongTimeString(), timer.Elapsed);
