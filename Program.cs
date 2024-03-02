@@ -20,23 +20,23 @@ Stopwatch timer = new Stopwatch();
 string accessToken = string.Empty;
 string bearerToken = string.Empty;
 
-//const string LIVE_API_BASE = "https://customer.jetnetconnect.com/api/"; // live customer api
-const string TEST_API_BASE = "https://testcustomer.jetnetconnect.com/api/"; // test customer api
+const string API_BASE = "https://customer.jetnetconnect.com/api/"; // live customer api
+//const string API_BASE = "https://testcustomer.jetnetconnect.com/api/"; // test customer api
 
-//const string LOCAL_API_BASE = "https://www.jetnet.connect.com/api/"; // local customer api (IIS)
-//const string LOCAL_API_BASE = "https://localhost:44382/api/"; // local customer api (IISExpress)
+//const string API_BASE = "https://www.jetnet.connect.com/api/"; // local customer api (IIS)
+//const string API_BASE = "https://localhost:44382/api/"; // local customer api (IISExpress)
 
 
 string apiBase = ""; // base api path 
 
-apiBase = TEST_API_BASE;
+apiBase = API_BASE;
 
 string authURL = "Admin/APILogin";
 string aircraftControler = "Aircraft";
 string companyControler = "Company";
 string contactControler = "Contact";
 string utilityControler = "Utility"; //CustomExports
-string exportsControler = "CustomExports";
+string exportsControler = "CustomEndpoints";
 
 string getAccountInfo = utilityControler + "/getAccountInfo/{0}";
 
@@ -248,24 +248,24 @@ AcHistoryOptions content3 = new()
   aircraftid = 0,
   airframetype = eAirFrameTypes.None,
   maketype = eMakeTypes.None,
-  modelid = 1151,
-  make = "",
+  modelid = 0,
+  make = "GULFSTREAM",
   companyid = 0,
-  isnewaircraft = eYesNoIgnoreFlag.Yes,
-  allrelationships = false,
-  transtype = transtypes,
-  startdate = "",
+  isnewaircraft = eYesNoIgnoreFlag.Ignore,
+  allrelationships = true,
+  transtype = null, //transtypes,
+  startdate = "01/01/2024",
   enddate = "",
   lastactionstartdate = "",
   lastactionenddate = "",
   aclist = null,
   modlist = null,
   ispreownedtrans = eYesNoIgnoreFlag.Ignore,
-  isretailtrans = eYesNoIgnoreFlag.Yes,
+  isretailtrans = eYesNoIgnoreFlag.Ignore,
   isinternaltrans = eYesNoIgnoreFlag.Ignore
 };
 
-// returnValue = customerAPI.GetFromAPI(bearerToken, restURL, content3, "PUT").Result;
+returnValue = customerAPI.GetFromAPI(bearerToken, restURL, content3, "PUT").Result;
 responseAcHistory aircraftHistoryList = new();
 
 if (returnValue is not null)
@@ -377,11 +377,14 @@ timer.Start();
 Console.WriteLine("\nSTART : {0} get gulfstream export et: {1:hh\\:mm\\:ss}", DateTime.Now.ToLongTimeString(), timer.Elapsed);
 
 returnValue = customerAPI.GetFromAPI(bearerToken, restURL, null).Result;
+
+Console.WriteLine("\nRESPONSE : {0} et: {1:hh\\:mm\\:ss}", DateTime.Now.ToLongTimeString(), timer.Elapsed);
+
 responseGulfstreamExport gulfstreamExport = new();
 
 if (returnValue is not null)
 {
-  gulfstreamExport = JsonSerializer.Deserialize<responseGulfstreamExport>(returnValue)!;
+  gulfstreamExport = JsonSerializer.Deserialize<responseGulfstreamExport>(returnValue, serializeOptions)!;
 
   if (gulfstreamExport.responsestatus!.ToUpper().Contains(@"SUCCESS"))
     Console.WriteLine("\nRETURN get gulfstream export {0} et: {1:hh\\:mm\\:ss}", returnValue.Trim(), timer.Elapsed);
