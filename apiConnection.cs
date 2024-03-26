@@ -946,6 +946,221 @@ namespace jtcTestClient
     public List<string>? contactdelete { get; set; }
 
   }
+
+  public class fuelerLinxAcClass
+  {
+    public fuelerLinxAcClass()
+    {
+      ac_id = 0;
+      amod_id = 0;
+      ac_airframe_type_code = eAirFrameTypes.None;
+      ac_maketype = eMakeTypes.None;
+      amod_make_name = null;
+      amod_model_name = null;
+      ac_weightclass = "";
+      ac_jniqcategory = null;
+      amod_icao_code = "";
+      ac_ser_no_full = null;
+      ac_reg_no = null;
+      ac_mfr_year = 0;
+      ac_year = 0;
+      ac_aport_icao_code = null;
+      ac_aport_name = null;
+      ac_ownership = "";
+      ac_usage = "";
+      ac_maintained = null;
+      ac_ref_comp_types = null;
+
+    }
+
+    [JsonPropertyName("aircraftid")]
+    public long ac_id { get; set; }
+
+    [JsonPropertyName("modelid")]
+    public long amod_id { get; set; }
+
+    [JsonPropertyName("airframetype")]
+    public eAirFrameTypes ac_airframe_type_code { get; set; }
+
+    [JsonPropertyName("maketype")]
+    public eMakeTypes ac_maketype { get; set; }
+
+    [JsonPropertyName("make")]
+    public dynamic? amod_make_name { get; set; }
+
+    [JsonPropertyName("model")]
+    public dynamic? amod_model_name { get; set; }
+
+    [JsonPropertyName("icaotype")]
+    public string? amod_icao_code { get; set; }
+
+    [JsonPropertyName("serialnbr")]
+    public dynamic? ac_ser_no_full { get; set; }
+
+    [JsonPropertyName("regnbr")]
+    public dynamic? ac_reg_no { get; set; }
+
+    [JsonPropertyName("yearmfr")]
+    public int ac_mfr_year { get; set; }
+
+    [JsonPropertyName("yeardlv")]
+    public int ac_year { get; set; }
+
+    [JsonPropertyName("weightclass")]
+    public string? ac_weightclass { get; set; }
+
+    [JsonPropertyName("categorysize")]
+    public dynamic? ac_jniqcategory { get; set; }
+
+    [JsonPropertyName("baseicao")]
+    public string? ac_aport_icao_code { get; set; }
+
+    [JsonPropertyName("baseairport")]
+    public string? ac_aport_name { get; set; }
+
+    [JsonPropertyName("ownership")]
+    public string? ac_ownership { get; set; }
+
+    [JsonPropertyName("usage")]
+    public string? ac_usage { get; set; }
+
+    [JsonPropertyName("maintained")]
+    public dynamic? ac_maintained { get; set; }
+
+    // list of pre-defined contact type references
+    [JsonPropertyName("companyrelationships")]
+    public List<fuelerLinxAcRefClass>? ac_ref_comp_types { get; set; }
+  }
+
+  public class fuelerLinxAcRefClass
+  {
+    public fuelerLinxAcRefClass()
+    {
+      comp_id = 0;
+      comp_parent_comp_id = 0;
+      comp_relation = null;
+      comp_agencytype = null;
+      comp_businesstype = null;
+      comp_name = null;
+      comp_address1 = null;
+      comp_address2 = null;
+      comp_city = null;
+      comp_state = null;
+      comp_stateabbr = null;
+      comp_postcode = null;
+      comp_country = null;
+      comp_email_address = null;
+      comp_office = null;
+
+      contact_id = 0;
+      contact_sirname = null;
+      contact_first_name = null;
+      contact_middle_initial = null;
+      contact_last_name = null;
+      contact_suffix = null;
+      contact_title = null;
+      contact_email_address = null;
+      contact_best = null;
+      contact_office = null;
+      contact_mobile = null;
+    }
+
+    [JsonPropertyName("companyid")]
+    public long comp_id { get; set; }
+
+    [JsonPropertyName("parentcompanyid")]
+    public long comp_parent_comp_id { get; set; }
+
+    [JsonPropertyName("companyrelation")]
+    public dynamic? comp_relation { get; set; }
+
+    [JsonPropertyName("companyname")]
+    public dynamic? comp_name { get; set; }
+
+    [JsonPropertyName("companyisoperator")]
+    public dynamic? comp_operator_flag { get; set; }
+
+    [JsonPropertyName("companyagencytype")]
+    public dynamic? comp_agencytype { get; set; }
+
+    [JsonPropertyName("companybusinesstype")]
+    public dynamic? comp_businesstype { get; set; }
+
+    [JsonPropertyName("companyaddress1")]
+    public dynamic? comp_address1 { get; set; }
+
+    [JsonPropertyName("companyaddress2")]
+    public dynamic? comp_address2 { get; set; }
+
+    [JsonPropertyName("companycity")]
+    public dynamic? comp_city { get; set; }
+
+    [JsonPropertyName("companystate")]
+    public dynamic? comp_state { get; set; }
+
+    [JsonPropertyName("companystateabbr")]
+    public dynamic? comp_stateabbr { get; set; }
+
+    [JsonPropertyName("companypostcode")]
+    public dynamic? comp_postcode { get; set; }
+
+    [JsonPropertyName("companycountry")]
+    public dynamic? comp_country { get; set; }
+
+    [JsonPropertyName("companyemail")]
+    public dynamic? comp_email_address { get; set; }
+
+    [JsonPropertyName("companyofficephone")]
+    public dynamic? comp_office { get; set; }
+
+    [JsonPropertyName("contactid")]
+    public long contact_id { get; set; }
+
+    [JsonPropertyName("contactsirname")]
+    public dynamic? contact_sirname { get; set; }
+
+    [JsonPropertyName("contactfirstname")]
+    public dynamic? contact_first_name { get; set; }
+
+    [JsonPropertyName("contactmiddleinitial")]
+    public dynamic? contact_middle_initial { get; set; }
+
+    [JsonPropertyName("contactlastname")]
+    public dynamic? contact_last_name { get; set; }
+
+    [JsonPropertyName("contactsuffix")]
+    public dynamic? contact_suffix { get; set; }
+
+    [JsonPropertyName("contacttitle")]
+    public dynamic? contact_title { get; set; }
+
+    [JsonPropertyName("contactemail")]
+    public dynamic? contact_email_address { get; set; }
+
+    [JsonPropertyName("contactbestphone")]
+    public dynamic? contact_best { get; set; }
+
+    [JsonPropertyName("contactofficephone")]
+    public dynamic? contact_office { get; set; }
+
+    [JsonPropertyName("contactmobilephone")]
+    public dynamic? contact_mobile { get; set; }
+  }
+
+  /// <summary>
+  /// Response Fueler Linx Export
+  /// </summary> 
+  public class responseFuelerLinxExport
+  {
+    public string? responseid { get; set; }
+
+    public string? responsestatus { get; set; }
+
+    /// <summary>
+    /// Results returned from the request.
+    /// </summary> 
+    public fuelerLinxAcClass? aircraftresult { get; set; }
+  }
   #endregion
 
   #region company_classes

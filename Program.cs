@@ -47,6 +47,7 @@ string getAircraftFlightsList = aircraftControler + "/getFlightData/{0}";
 string getCondensedOwnerOperators = aircraftControler + "/getCondensedOwnerOperators/{0}";
 
 string getGulfstreamExport = exportsControler + "/getGulfstreamExport/{0}";
+string getFulerLinxExport = exportsControler + "/getFuelerLinxExport/{0}/{1}";
 
 string getCompany = companyControler + "/getCompany/{0}/{1}";
 string getCompanyList = companyControler + "/getCompanyList/{0}";
@@ -243,29 +244,35 @@ transtypes.Add(eAcTransTypes.FullSale);
 transtypes.Add(eAcTransTypes.ShareSale);
 transtypes.Add(eAcTransTypes.Lease);
 
+//AcHistoryOptions content3 = new()
+//{
+//  aircraftid = 0,
+//  airframetype = eAirFrameTypes.None,
+//  maketype = eMakeTypes.None,
+//  modelid = 0,
+//  make = "GULFSTREAM",
+//  companyid = 0,
+//  isnewaircraft = eYesNoIgnoreFlag.Ignore,
+//  allrelationships = true,
+//  transtype = null, //transtypes,
+//  startdate = "01/01/2024",
+//  enddate = "",
+//  lastactionstartdate = "",
+//  lastactionenddate = "",
+//  aclist = null,
+//  modlist = null,
+//  ispreownedtrans = eYesNoIgnoreFlag.Ignore,
+//  isretailtrans = eYesNoIgnoreFlag.Ignore,
+//  isinternaltrans = eYesNoIgnoreFlag.Ignore
+//};
+
 AcHistoryOptions content3 = new()
 {
-  aircraftid = 0,
-  airframetype = eAirFrameTypes.None,
-  maketype = eMakeTypes.None,
-  modelid = 0,
-  make = "GULFSTREAM",
-  companyid = 0,
-  isnewaircraft = eYesNoIgnoreFlag.Ignore,
-  allrelationships = true,
-  transtype = null, //transtypes,
-  startdate = "01/01/2024",
-  enddate = "",
-  lastactionstartdate = "",
-  lastactionenddate = "",
-  aclist = null,
-  modlist = null,
-  ispreownedtrans = eYesNoIgnoreFlag.Ignore,
-  isretailtrans = eYesNoIgnoreFlag.Ignore,
-  isinternaltrans = eYesNoIgnoreFlag.Ignore
+  aircraftid = 12798,
+  startdate = "01/01/2000"
 };
 
-returnValue = customerAPI.GetFromAPI(bearerToken, restURL, content3, "PUT").Result;
+//returnValue = customerAPI.GetFromAPI(bearerToken, restURL, content3, "PUT").Result;
 responseAcHistory aircraftHistoryList = new();
 
 if (returnValue is not null)
@@ -295,7 +302,7 @@ AcListOptions content5 = new()
 timer.Start();
 Console.WriteLine("\nSTART : {0} get Condensed Owner/Operator Report et: {1:hh\\:mm\\:ss}", DateTime.Now.ToLongTimeString(), timer.Elapsed);
 
-returnValue = customerAPI.GetFromAPI(bearerToken, restURL, content5, "PUT").Result;
+//returnValue = customerAPI.GetFromAPI(bearerToken, restURL, content5, "PUT").Result;
 responseCondensedOwnerOperatorReport condensedOwnerOperatorReport = new();
 
 if (returnValue is not null)
@@ -376,7 +383,7 @@ timer.Start();
 
 Console.WriteLine("\nSTART : {0} get gulfstream export et: {1:hh\\:mm\\:ss}", DateTime.Now.ToLongTimeString(), timer.Elapsed);
 
-returnValue = customerAPI.GetFromAPI(bearerToken, restURL, null).Result;
+//returnValue = customerAPI.GetFromAPI(bearerToken, restURL, null).Result;
 
 Console.WriteLine("\nRESPONSE : {0} et: {1:hh\\:mm\\:ss}", DateTime.Now.ToLongTimeString(), timer.Elapsed);
 
@@ -401,6 +408,40 @@ Console.WriteLine("\nEND : {0} get gulfstream export et: {1:hh\\:mm\\:ss}", Date
 
 returnValue = null;
 
+// get gulfstream export example
+
+tmpString = string.Format(getFulerLinxExport, "N516MX", accessToken.Trim());
+restURL = apiBase + tmpString;
+
+timer.Reset();
+timer.Start();
+
+Console.WriteLine("\nSTART : {0} get FuelerLinx export et: {1:hh\\:mm\\:ss}", DateTime.Now.ToLongTimeString(), timer.Elapsed);
+
+returnValue = customerAPI.GetFromAPI(bearerToken, restURL, null).Result;
+
+Console.WriteLine("\nRESPONSE : {0} et: {1:hh\\:mm\\:ss}", DateTime.Now.ToLongTimeString(), timer.Elapsed);
+
+responseFuelerLinxExport fuelerLinxExport = new();
+
+if (returnValue is not null)
+{
+  fuelerLinxExport = JsonSerializer.Deserialize<responseFuelerLinxExport>(returnValue, serializeOptions)!;
+
+  if (fuelerLinxExport.responsestatus!.ToUpper().Contains(@"SUCCESS"))
+    Console.WriteLine("\nRETURN get FuelerLinx export {0} et: {1:hh\\:mm\\:ss}", returnValue.Trim(), timer.Elapsed);
+  else
+    Console.WriteLine("\nERROR : get FuelerLinx export {0} et: {1:hh\\:mm\\:ss}", fuelerLinxExport.responsestatus!.Trim(), timer.Elapsed);
+
+  Console.WriteLine("\nEND get FuelerLinx export {0} et: {1:hh\\:mm\\:ss}", "1", timer.Elapsed);
+
+}
+
+timer.Stop();
+
+Console.WriteLine("\nEND : {0} get FuelerLinx export et: {1:hh\\:mm\\:ss}", DateTime.Now.ToLongTimeString(), timer.Elapsed);
+
+returnValue = null;
 // get all company info example
 
 tmpString = string.Format(getAllCompanyInfo, accessToken.Trim());
@@ -411,7 +452,7 @@ timer.Start();
 
 Console.WriteLine("\nSTART : {0} getAllCompanyInfo et: {1:hh\\:mm\\:ss}", DateTime.Now.ToLongTimeString(), timer.Elapsed);
 
-returnValue = customerAPI.GetFromAPI(bearerToken, restURL, null).Result;
+//returnValue = customerAPI.GetFromAPI(bearerToken, restURL, null).Result;
 responseAllCompanyInfo allCompanyInfo = new();
 
 if (returnValue is not null)
