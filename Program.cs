@@ -272,7 +272,7 @@ AcHistoryOptions content3 = new()
   startdate = "01/01/2000"
 };
 
-//returnValue = customerAPI.GetFromAPI(bearerToken, restURL, content3, "PUT").Result;
+returnValue = customerAPI.GetFromAPI(bearerToken, restURL, content3, "PUT").Result;
 responseAcHistory aircraftHistoryList = new();
 
 if (returnValue is not null)
@@ -339,8 +339,8 @@ AcFlightDataOptions content4 = new()
   make = "",
   origin = "",
   destination = "",
-  startdate = "08-01-2023", // 00:00:00",
-  enddate = "08-02-2023", // 06:00:00",
+  startdate = "04-01-2024", // 00:00:00",
+  enddate = "04-02-2024", // 06:00:00",
   aclist = null,
   modlist = null,
   lastactionstartdate = "",
@@ -418,7 +418,7 @@ timer.Start();
 
 Console.WriteLine("\nSTART : {0} get FuelerLinx export et: {1:hh\\:mm\\:ss}", DateTime.Now.ToLongTimeString(), timer.Elapsed);
 
-returnValue = customerAPI.GetFromAPI(bearerToken, restURL, null).Result;
+//returnValue = customerAPI.GetFromAPI(bearerToken, restURL, null).Result;
 
 Console.WriteLine("\nRESPONSE : {0} et: {1:hh\\:mm\\:ss}", DateTime.Now.ToLongTimeString(), timer.Elapsed);
 
