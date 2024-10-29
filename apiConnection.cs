@@ -419,6 +419,13 @@ namespace jtcTestClient
     }
 
   }
+  public class aircraftPicturesClass
+  {
+    public int imageid { get; set; }
+    public string? description { get; set; }
+    public string? extension { get; set; }
+    public string? pictureurl { get; set; }
+  }
   internal class aircraftClass
   {
     public aircraftIdentClass? identification { get; set; }
@@ -435,6 +442,7 @@ namespace jtcTestClient
     public List<detailItemClass>? exterior { get; set; }
     public List<aircraftLeaseClass>? leases { get; set; }
     public List<aircraftFlightsClass>? flights { get; set; }
+    public List<aircraftPicturesClass>? pictures { get; set; }
     public aircraftClass()
     {
 
@@ -455,7 +463,7 @@ namespace jtcTestClient
       exterior = null;
       leases = null;
       flights = null;
-
+      pictures = null;
     }
 
   }
@@ -946,7 +954,6 @@ namespace jtcTestClient
     public List<string>? contactdelete { get; set; }
 
   }
-
   public class fuelerLinxAcClass
   {
     public fuelerLinxAcClass()
@@ -1031,7 +1038,6 @@ namespace jtcTestClient
     [JsonPropertyName("companyrelationships")]
     public List<fuelerLinxAcRefClass>? ac_ref_comp_types { get; set; }
   }
-
   public class fuelerLinxAcRefClass
   {
     public fuelerLinxAcRefClass()
@@ -1146,10 +1152,13 @@ namespace jtcTestClient
     [JsonPropertyName("contactmobilephone")]
     public dynamic? contact_mobile { get; set; }
   }
-
-  /// <summary>
-  /// Response Fueler Linx Export
-  /// </summary> 
+  public class responseAcPictures
+  {
+    public string? responseid { get; set; }
+    public string? responsestatus { get; set; }
+    public int count { get; set; }
+    public List<aircraftPicturesClass>? pictures { get; set; }
+  }
   public class responseFuelerLinxExport
   {
     public string? responseid { get; set; }
@@ -2576,12 +2585,17 @@ namespace jtcTestClient
     public List<modelClass>? modellist { get; set; }
 
   }
+  public class responseS3Sync
+  {
 
+    public string? responseid { get; set; }
+    public string? responsestatus { get; set; }
+    public int count { get; set; }
+  }
   public class UpperCaseNamingPolicy : JsonNamingPolicy
   {
     public override string ConvertName(string name) => name.ToUpper();
   }
-
   public class LowerCaseNamingPolicy : JsonNamingPolicy
   {
     public override string ConvertName(string name) => name.ToLower();
