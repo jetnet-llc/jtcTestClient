@@ -26,8 +26,8 @@ Stopwatch timer = new Stopwatch();
 string accessToken = string.Empty;
 string bearerToken = string.Empty;
 
-const string API_BASE = "https://customer.jetnetconnect.com/api/"; // live customer api
-//const string API_BASE = "https://testcustomer.jetnetconnect.com/api/"; // test customer api
+//const string API_BASE = "https://customer.jetnetconnect.com/api/"; // live customer api
+const string API_BASE = "https://testcustomer.jetnetconnect.com/api/"; // test customer api
 
 //const string API_BASE = "https://10.100.16.129/api/"; // local customer api (IIS) 
 //const string API_BASE = "https://localhost:44382/api/"; // local customer api (IISExpress)
@@ -62,6 +62,7 @@ string getNetjetsFlightList = exportsControler + "/getNetJetsFlightData/{0}";
 
 string getCompany = companyControler + "/getCompany/{0}/{1}";
 string getCompanyList = companyControler + "/getCompanyList/{0}";
+string getCompanyContactList = companyControler + "/getCompanyContactList/{0}";
 
 string getAllCompanyInfo = companyControler + "/getAllCompanyInfo/{0}/{1}/{2}";
 string getAllCompanyObjects = companyControler + "/getAllCompanyObjects/{0}/{1}/{2}";
@@ -398,7 +399,7 @@ timer.Reset();
 timer.Start();
 Console.WriteLine("\nSTART : {0} get Condensed Owner/Operator Report et: {1:hh\\:mm\\:ss}", DateTime.Now.ToLongTimeString(), timer.Elapsed);
 
-returnValue = customerAPI.GetFromAPI(bearerToken, restURL, content5, "PUT").Result;
+//returnValue = customerAPI.GetFromAPI(bearerToken, restURL, content5, "PUT").Result;
 responseCondensedOwnerOperatorReport condensedOwnerOperatorReport = new();
 
 if (returnValue is not null)
@@ -453,7 +454,7 @@ AcSnapshotOptions content7 = new()
   //modelid = 278,
   //regnbr = "N266KW",
   //lifecycle = eLifeCycle.InOperation,
-  startdate = "05/01/2025",
+  startdate = "01/01/2026",
   //displayRange = 1
   //exactMatchReg = false
 };
@@ -509,7 +510,12 @@ AcListOptions content6 = new()
   //actiondate = "04/28/2025",
   //aircraftchanges = "true"
   //aclist = [227308, 29596, 232574],
-  showHistoricalAcRefs = true
+  showHistoricalAcRefs = false,
+  showAdditionalEquip = true,
+  showExterior = true,
+  showInterior = true,
+  showMaintenance = true,
+  showAvionics = true
 };
 
 timer.Reset();
@@ -517,7 +523,7 @@ timer.Start();
 
 Console.WriteLine("\nSTART : {0} get Bulk Import of Aircraft Records et: {1:hh\\:mm\\:ss}", DateTime.Now.ToLongTimeString(), timer.Elapsed);
 
-//returnValue = customerAPI.GetFromAPI(bearerToken, restURL, content6, "PUT").Result;
+returnValue = customerAPI.GetFromAPI(bearerToken, restURL, content6, "PUT").Result;
 responseBulkExport bulkExportOutput = new();
 
 if (returnValue is not null)
@@ -532,6 +538,7 @@ if (returnValue is not null)
       Console.WriteLine("\nERROR : Bulk Import of Aircraft Records {0} et: {1:hh\\:mm\\:ss}", bulkExportOutput.responsestatus!.Trim(), timer.Elapsed);
 
     Console.WriteLine("\nEND get Bulk Import of Aircraft Records {0} et: {1:hh\\:mm\\:ss}", bulkExportOutput.exportaircraftcount!.ToString(), timer.Elapsed);
+    Console.WriteLine("Bulk Import avionics records: {0}", bulkExportOutput.acavionicscount.ToString());
     timer.Stop();
 
   }
@@ -577,7 +584,7 @@ timer.Reset();
 timer.Start();
 Console.WriteLine("\nSTART : {0} get aircraft flights list et: {1:hh\\:mm\\:ss}", DateTime.Now.ToLongTimeString(), timer.Elapsed);
 
-returnValue = customerAPI.GetFromAPI(bearerToken, restURL, content4, "PUT").Result;
+//returnValue = customerAPI.GetFromAPI(bearerToken, restURL, content4, "PUT").Result;
 responseAcFlightData aircraftFlightsList = new();
 
 if (returnValue is not null)
@@ -626,7 +633,7 @@ timer.Reset();
 timer.Start();
 Console.WriteLine("\nSTART : {0} get aircraft netjet flights list et: {1:hh\\:mm\\:ss}", DateTime.Now.ToLongTimeString(), timer.Elapsed);
 
-returnValue = customerAPI.GetFromAPI(bearerToken, restURL, content9, "PUT").Result;
+//returnValue = customerAPI.GetFromAPI(bearerToken, restURL, content9, "PUT").Result;
 
 responseAcFlightData aircraftNetjetFlightsList = new();
 
@@ -645,7 +652,7 @@ if (returnValue is not null)
 
 timer.Stop();
 
-Console.WriteLine("\nEND : {0} get aircraft flights list et: {1:hh\\:mm\\:ss}", DateTime.Now.ToLongTimeString(), timer.Elapsed);
+Console.WriteLine("\nEND : {0} get aircraft netjet flights list et: {1:hh\\:mm\\:ss}", DateTime.Now.ToLongTimeString(), timer.Elapsed);
 
 returnValue = null;
 // get gulfstream export example
@@ -931,3 +938,63 @@ if (returnValue is not null)
   else
     Console.WriteLine("\nERROR : contact list {0}", contactList.responsestatus!.Trim());
 }
+
+returnValue = null;
+
+// get company contact list example
+
+tmpString = string.Format(getCompanyContactList, accessToken.Trim());
+restURL = apiBase + tmpString;
+
+List<string> tmpCcState = new();
+tmpCcState.Add("NY");
+tmpCcState.Add("NJ");
+
+CompContactListOptions content10 = new()
+{
+  name = "ab",
+  country = "",
+  city = "",
+  //state = tmpCcState,
+  statename = null,
+  bustype = null,
+  relationship = null,
+  website = "",
+  postalcode = "",
+  complist = null,
+  actiondate = "",
+  showcontacts = true
+};
+
+timer.Reset();
+timer.Start();
+Console.WriteLine("\nSTART : {0} get company contact list et: {1:hh\\:mm\\:ss}", DateTime.Now.ToLongTimeString(), timer.Elapsed);
+
+returnValue = customerAPI.GetFromAPI(bearerToken, restURL, content10, "PUT").Result;
+responseCompanyContactList companyContactList = new();
+
+if (returnValue is not null)
+{
+  try
+  {
+    companyContactList = JsonSerializer.Deserialize<responseCompanyContactList>(returnValue, serializeOptions)!;
+
+    if (companyContactList.responsestatus!.ToUpper().Contains(@"SUCCESS"))
+      Console.WriteLine("\nRETURN : company contact list {0} et: {1:hh\\:mm\\:ss}", returnValue.Trim(), timer.Elapsed);
+    else
+      Console.WriteLine("\nERROR : company contact list {0} et: {1:hh\\:mm\\:ss}", companyContactList.responsestatus!.Trim(), timer.Elapsed);
+
+    Console.WriteLine("\nEND get company contact list {0} et: {1:hh\\:mm\\:ss}", companyContactList.count.ToString(), timer.Elapsed);
+    timer.Stop();
+  }
+  catch (Exception ex)
+  {
+    timer.Stop();
+
+    Console.WriteLine("returnValue : {0}", returnValue!.Trim());
+    Console.WriteLine("ERROR : {0}", ex.Message!.Trim());
+    var input = Console.ReadKey();
+  }
+}
+
+Console.WriteLine("\nEND : {0} get company contact list et: {1:hh\\:mm\\:ss}", DateTime.Now.ToLongTimeString(), timer.Elapsed);

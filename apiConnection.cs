@@ -133,17 +133,22 @@ namespace jtcTestClient
       maketype = eMakeTypes.None;
       sernbr = "";
       regnbr = "";
+      regnbrlist = null;
       modelid = 0;
       make = "";
+      makelist = null;
       forsale = null; // eYesNoIgnoreFlag.Ignore;
       lifecycle = eLifeCycle.None;
+      ownertype = null;
       basestate = null;
       basestatename = null;
       basecountry = "";
       basecountrylist = null;
       basecode = "";
       actiondate = "";
+      enddate = "";
       companyid = 0;
+      complist = null;
       contactid = 0;
       yearmfr = 0;
       yeardlv = 0;
@@ -152,23 +157,34 @@ namespace jtcTestClient
       modlist = null;
       exactMatchReg = false;
       showHistoricalAcRefs = false;
+      showAwaitingDocsCompanies = false;
+      showMaintenance = false;
+      showAdditionalEquip = false;
+      showExterior = false;
+      showInterior = false;
+      showAvionics = false;
     }
 
     public eAirFrameTypes airframetype { get; set; }
     public eMakeTypes maketype { get; set; }
     public string sernbr { get; set; }
     public string regnbr { get; set; }
+    public List<string>? regnbrlist { get; set; }
     public int modelid { get; set; }
     public string make { get; set; }
+    public List<string>? makelist { get; set; }
     public string? forsale { get; set; } //eYesNoIgnoreFlag forsale { get; set; }
     public eLifeCycle lifecycle { get; set; }
+    public List<eOwnerType>? ownertype { get; set; }
     public List<string>? basestate { get; set; }
     public List<string>? basestatename { get; set; }
     public string basecountry { get; set; }
     public List<string>? basecountrylist { get; set; }
     public string basecode { get; set; }
     public string actiondate { get; set; }
+    public string enddate { get; set; }
     public int companyid { get; set; }
+    public List<int>? complist { get; set; }
     public int contactid { get; set; }
     public int yearmfr { get; set; }
     public int yeardlv { get; set; }
@@ -181,6 +197,24 @@ namespace jtcTestClient
 
     [DefaultValue(false)]
     public bool showHistoricalAcRefs { get; set; }
+
+    [DefaultValue(false)]
+    public bool showAwaitingDocsCompanies { get; set; }
+
+    [DefaultValue(false)]
+    public bool showMaintenance { get; set; }
+
+    [DefaultValue(false)]
+    public bool showAdditionalEquip { get; set; }
+
+    [DefaultValue(false)]
+    public bool showExterior { get; set; }
+
+    [DefaultValue(false)]
+    public bool showInterior { get; set; }
+
+    [DefaultValue(false)]
+    public bool showAvionics { get; set; }
   }
   public class responseAircraftList
   {
@@ -1846,6 +1880,17 @@ namespace jtcTestClient
     public dynamic? timescurrentdate { get; set; }
 
   }
+  public class bulkAvionicsClass
+  {
+    public long aircraftid { get; set; }
+    public List<aircraftAvionicsClass>? aircraftAvionics { get; set; }
+
+    public bulkAvionicsClass()
+    {
+      aircraftid = 0;
+      aircraftAvionics = null;
+    }
+  }
   public class responseBulkExport
   {
 
@@ -1860,6 +1905,8 @@ namespace jtcTestClient
     public List<bulkContactRecordsClass>? contacts { get; set; }
     public int phonenumbercount { get; set; }
     public List<bulkPhoneRecordsClass>? phonenumbers { get; set; }
+    public int acavionicscount { get; set; }
+    public List<bulkAvionicsClass>? acavionics { get; set; }
 
   }
   public class responseCondensedOwnerOperatorReport
@@ -3733,6 +3780,58 @@ namespace jtcTestClient
     public string? pagelink { get; set; }
     public List<companyListClass>? companies { get; set; }
   }
+  public class CompContactListOptions
+  {
+    public CompContactListOptions()
+    {
+      name = "";
+      country = "";
+      city = "";
+      state = null;
+      statename = null;
+      bustype = null;
+      relationship = null;
+      website = "";
+      postalcode = "";
+      complist = null;
+      actiondate = "";
+      showcontacts = false;
+    }
+
+    public string name { get; set; }
+    public string country { get; set; }
+    public string city { get; set; }
+    public List<string>? state { get; set; }
+    public List<string>? statename { get; set; }
+    public List<string>? bustype { get; set; }
+    public List<string>? relationship { get; set; }
+    public string website { get; set; }
+    public string postalcode { get; set; }
+    public List<int>? complist { get; set; }
+    public string actiondate { get; set; }
+    public bool showcontacts { get; set; }
+  }
+  public class compContactClass
+  {
+    public companyListClass? company { get; set; }
+    public List<contactListClass>? contacts { get; set; }
+
+    public compContactClass()
+    {
+      company = null;
+      contacts = null;
+    }
+  }
+  public class responseCompanyContactList
+  {
+    public string? responseid { get; set; }
+    public string? responsestatus { get; set; }
+    public int count { get; set; }
+    public int currentpage { get; set; }
+    public int maxpages { get; set; }
+    public string? pageurl { get; set; }
+    public List<compContactClass>? companycontacts { get; set; }
+  }
   public class compRelatedClass
   {
     public int companyid { get; set; }
@@ -4461,6 +4560,24 @@ namespace jtcTestClient
     [Description("Withdrawn from Use - Stored")]
     [JsonPropertyName("S")]
     WithdrawnfromUseStored = 12
+  }
+  public enum eOwnerType : int
+  {
+    [Description("None")]
+    [JsonPropertyName("N")]
+    None = 0,
+
+    [Description("Wholly Owned")]
+    [JsonPropertyName("W")]
+    WhollyOwned = 1,
+
+    [Description("Shared Ownership")]
+    [JsonPropertyName("S")]
+    SharedOwnership = 2,
+
+    [Description("Fractional Ownership Program")]
+    [JsonPropertyName("F")]
+    FractionalOwnership = 3,
   }
   public enum eModelTrendSummary : int
   {
