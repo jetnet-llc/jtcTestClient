@@ -80,6 +80,51 @@ namespace jtcTestClient
   #endregion
 
   #region aircraft_classes
+  public class Aircraft2
+  {
+    // Identification
+    public int aircraftid { get; set; }
+    public string? make { get; set; }
+    public string? model { get; set; }
+    public int modelid { get; set; }
+    public string? maketype { get; set; }
+
+    // Manufacturer and Registration
+    public dynamic? mfr { get; set; }
+    public dynamic? icao { get; set; }
+    public dynamic? sernbr { get; set; }
+    public dynamic? regnbr { get; set; }
+
+    // Year Information
+    public dynamic? yearmfr { get; set; }
+    public dynamic? yeardlv { get; set; }
+
+    // Sale Status
+    public string? forsale { get; set; }
+    public string? exclusive { get; set; }
+    public string? leased { get; set; }
+    public dynamic? marketstatus { get; set; }
+    public dynamic? asking { get; set; }
+    public dynamic? askingprice { get; set; }
+    public dynamic? listdate { get; set; }
+
+    // Base Location
+    public string? basecity { get; set; }
+    public string? basestate { get; set; }
+    public string? basecountry { get; set; }
+    public dynamic? baseairportid { get; set; }
+    public dynamic? baseicaocode { get; set; }
+    public dynamic? baseiatacode { get; set; }
+
+    // Flight Time
+    public dynamic? aftt { get; set; }
+    public dynamic? estaftt { get; set; }
+
+    // Engine Serial Numbers
+    public dynamic? enginesn1 { get; set; }
+    public dynamic? enginesn2 { get; set; }
+  }
+
   public class AcListOptions
   {
     public AcListOptions()
@@ -106,6 +151,7 @@ namespace jtcTestClient
       aclist = null;
       modlist = null;
       exactMatchReg = false;
+      showHistoricalAcRefs = false;
     }
 
     public eAirFrameTypes airframetype { get; set; }
@@ -132,6 +178,9 @@ namespace jtcTestClient
 
     [DefaultValue(false)]
     public bool exactMatchReg { get; set; }
+
+    [DefaultValue(false)]
+    public bool showHistoricalAcRefs { get; set; }
   }
   public class responseAircraftList
   {
@@ -139,7 +188,7 @@ namespace jtcTestClient
     public string? responsestatus { get; set; }
     public int count { get; set; }
     public string? pagelink { get; set; }
-    public List<object>? aircraft { get; set; }
+    public List<Aircraft2>? aircraft { get; set; }
   }
   public class aircraftIdentClass
   {
@@ -3156,7 +3205,7 @@ namespace jtcTestClient
     public dynamic? Comp1relation { get; set; }
 
     [JsonPropertyName("comp1agencytype")]
-    public dynamic?  Comp1agencytype { get; set; }
+    public dynamic? Comp1agencytype { get; set; }
 
     [JsonPropertyName("comp1businesstype")]
     public dynamic? Comp1businesstype { get; set; }
@@ -3223,7 +3272,7 @@ namespace jtcTestClient
     public dynamic? Comp2altname { get; set; }
 
     [JsonPropertyName("comp2email")]
-    public dynamic ?Comp2email { get; set; }
+    public dynamic? Comp2email { get; set; }
 
     [JsonPropertyName("comp2webaddress")]
     public dynamic? Comp2webaddress { get; set; }
@@ -3409,7 +3458,7 @@ namespace jtcTestClient
     public dynamic? Acenginename { get; set; }
 
     [JsonPropertyName("timesasofdate")]
-    public dynamic?Actimesasofdate { get; set; }
+    public dynamic? Actimesasofdate { get; set; }
 
     [JsonPropertyName("engsernbr1")]
     public dynamic? Acengine1serno { get; set; }
@@ -3592,7 +3641,15 @@ namespace jtcTestClient
   #endregion
 
   #region company_classes
+  public class CompObjectListOptions
+  {
+    public CompObjectListOptions()
+    {
+      complist = null;
+    }
+    public List<int>? complist { get; set; }
 
+  }
   public class CompListOptions
   {
     public CompListOptions()
@@ -3946,6 +4003,15 @@ namespace jtcTestClient
       comp_mobile = null;
 
     }
+  }
+  public class responseAllCompanyObjects
+  {
+    public string? responseid { get; set; }
+    public string? responsestatus { get; set; }
+    public int count { get; set; }
+    public int currentpage { get; set; }
+    public int maxpages { get; set; }
+    public List<companyClass>? allcompanyobjects { get; set; }
   }
   #endregion
 

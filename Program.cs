@@ -26,8 +26,8 @@ Stopwatch timer = new Stopwatch();
 string accessToken = string.Empty;
 string bearerToken = string.Empty;
 
-//const string API_BASE = "https://customer.jetnetconnect.com/api/"; // live customer api
-const string API_BASE = "https://testcustomer.jetnetconnect.com/api/"; // test customer api
+const string API_BASE = "https://customer.jetnetconnect.com/api/"; // live customer api
+//const string API_BASE = "https://testcustomer.jetnetconnect.com/api/"; // test customer api
 
 //const string API_BASE = "https://10.100.16.129/api/"; // local customer api (IIS) 
 //const string API_BASE = "https://localhost:44382/api/"; // local customer api (IISExpress)
@@ -58,11 +58,13 @@ string getBulkExport = aircraftControler + "/getBulkAircraftExport/{0}";
 
 string getGulfstreamExport = exportsControler + "/getGulfstreamExport/{0}";
 string getFulerLinxExport = exportsControler + "/getFuelerLinxExport/{0}/{1}";
+string getNetjetsFlightList = exportsControler + "/getNetJetsFlightData/{0}";
 
 string getCompany = companyControler + "/getCompany/{0}/{1}";
 string getCompanyList = companyControler + "/getCompanyList/{0}";
 
 string getAllCompanyInfo = companyControler + "/getAllCompanyInfo/{0}/{1}/{2}";
+string getAllCompanyObjects = companyControler + "/getAllCompanyObjects/{0}/{1}/{2}";
 
 string getContact = contactControler + "/getContact/{0}/{1}";
 string getContactList = contactControler + "/getContactList/{0}";
@@ -81,8 +83,8 @@ var serializeOptions = new JsonSerializerOptions
 
 ApiUser loginUser = new()
 {
-  EmailAddress = @"demo@jetnet.com",
-  Password = @"g846ii2v"
+  EmailAddress = @"demo@jetnet.com", // "demo@jetnet.com" "demo@jetnet.com" "demo@jetnet.com" "demo@jetnet.com"
+  Password = @"g846ii2v" // "g846ii2v" "g846ii2v" "g846ii2v" "g846ii2v"
 };
 
 apiConnection customerAPI = new();
@@ -90,6 +92,7 @@ string restURL = string.Empty;
 string? returnValue = string.Empty;
 responseAPILogin loginResponse = new();
 string tmpString = string.Empty;
+
 
 try
 {
@@ -209,7 +212,7 @@ returnValue = null;
 tmpString = string.Format(getContact, "345384", accessToken.Trim());
 restURL = apiBase + tmpString;
 
-// returnValue = customerAPI.GetFromAPI(bearerToken, restURL, null).Result;
+//returnValue = customerAPI.GetFromAPI(bearerToken, restURL, null).Result;
 
 responseContact contactResponse = new();
 
@@ -242,12 +245,12 @@ AcListOptions content = new()
   maketype = eMakeTypes.None,
   sernbr = "",
   regnbr = "",
-  modelid = 1271,
+  modelid = 0,
   make = "",
-  forsale = "true",
+  forsale = "",
   lifecycle = eLifeCycle.None,
   basestate = null,
-  basestatename = null,
+  basestatename = tmpStateName,
   basecountry = "",
   basecode = "",
   actiondate = "",
@@ -260,7 +263,7 @@ AcListOptions content = new()
   modlist = null
 };
 
-// returnValue = customerAPI.GetFromAPI(bearerToken, restURL, content, "PUT").Result;
+//returnValue = customerAPI.GetFromAPI(bearerToken, restURL, content, "PUT").Result;
 responseAircraftList aircraftList = new();
 
 if (returnValue is not null)
@@ -271,6 +274,12 @@ if (returnValue is not null)
     Console.WriteLine("\naircraft list {0}", returnValue.Trim());
   else
     Console.WriteLine("\nERROR : aircraft list {0}", aircraftList.responsestatus!.Trim());
+
+  //foreach (Aircraft2 ac in aircraftList.aircraft!)
+  //{
+  //  Console.WriteLine($"{ac.aircraftid},");// REG:{ac.regnbr} SER:{ac.sernbr} MFR:{ac.mfr} MODEL:{ac.model} MAKE:{ac.make}");
+
+  //}
 
 }
 
@@ -453,7 +462,7 @@ timer.Reset();
 timer.Start();
 Console.WriteLine("\nSTART : {0} get Condensed Snapshot et: {1:hh\\:mm\\:ss}", DateTime.Now.ToLongTimeString(), timer.Elapsed);
 
-returnValue = customerAPI.GetFromAPI(bearerToken, restURL, content7, "PUT").Result;
+//returnValue = customerAPI.GetFromAPI(bearerToken, restURL, content7, "PUT").Result;
 responseCondensedSnapshot condensedSnapshot = new();
 
 if (returnValue is not null)
@@ -495,19 +504,20 @@ restURL = apiBase + tmpString;
 
 AcListOptions content6 = new()
 {
-  make = "GULFSTREAM", // ROBINSON GULFSTREAM KING AIR BOEING AIRBUS ASTRA
-  //lifecycle = eLifeCycle.InOperation,
+  make = "GULFSTREAM", // ROBINSON GULFSTREAM KING AIR BOEING AIRBUS ASTRA aclist = [227308, 29596],
+  lifecycle = eLifeCycle.InOperation,
   //actiondate = "04/28/2025",
   //aircraftchanges = "true"
-  //aclist = [121570]
+  //aclist = [227308, 29596, 232574],
+  showHistoricalAcRefs = true
 };
 
 timer.Reset();
 timer.Start();
 
-Console.WriteLine("\nSTART : {0} get Bulk Inport of Aircraft Records et: {1:hh\\:mm\\:ss}", DateTime.Now.ToLongTimeString(), timer.Elapsed);
+Console.WriteLine("\nSTART : {0} get Bulk Import of Aircraft Records et: {1:hh\\:mm\\:ss}", DateTime.Now.ToLongTimeString(), timer.Elapsed);
 
-returnValue = customerAPI.GetFromAPI(bearerToken, restURL, content6, "PUT").Result;
+//returnValue = customerAPI.GetFromAPI(bearerToken, restURL, content6, "PUT").Result;
 responseBulkExport bulkExportOutput = new();
 
 if (returnValue is not null)
@@ -517,11 +527,11 @@ if (returnValue is not null)
     bulkExportOutput = JsonSerializer.Deserialize<responseBulkExport>(returnValue, serializeOptions)!;
 
     if (bulkExportOutput.responsestatus!.ToUpper().Contains(@"SUCCESS"))
-      Console.WriteLine("\nRETURN : Bulk Inport of Aircraft Records {0} et: {1:hh\\:mm\\:ss}", returnValue.Trim(), timer.Elapsed);
+      Console.WriteLine("\nRETURN : Bulk Import of Aircraft Records {0} et: {1:hh\\:mm\\:ss}", returnValue.Trim(), timer.Elapsed);
     else
-      Console.WriteLine("\nERROR : Bulk Inport of Aircraft Records {0} et: {1:hh\\:mm\\:ss}", bulkExportOutput.responsestatus!.Trim(), timer.Elapsed);
+      Console.WriteLine("\nERROR : Bulk Import of Aircraft Records {0} et: {1:hh\\:mm\\:ss}", bulkExportOutput.responsestatus!.Trim(), timer.Elapsed);
 
-    Console.WriteLine("\nEND get Bulk Inport of Aircraft Records {0} et: {1:hh\\:mm\\:ss}", bulkExportOutput.exportaircraftcount!.ToString(), timer.Elapsed);
+    Console.WriteLine("\nEND get Bulk Import of Aircraft Records {0} et: {1:hh\\:mm\\:ss}", bulkExportOutput.exportaircraftcount!.ToString(), timer.Elapsed);
     timer.Stop();
 
   }
@@ -535,7 +545,7 @@ if (returnValue is not null)
   }
 }
 
-Console.WriteLine("\nEND : {0} get Bulk Inport of Aircraft Records et: {1:hh\\:mm\\:ss}", DateTime.Now.ToLongTimeString(), timer.Elapsed);
+Console.WriteLine("\nEND : {0} get Bulk Import of Aircraft Records et: {1:hh\\:mm\\:ss}", DateTime.Now.ToLongTimeString(), timer.Elapsed);
 
 returnValue = null;
 
@@ -546,28 +556,28 @@ restURL = apiBase + tmpString;
 
 AcFlightDataOptions content4 = new()
 {
-  aircraftid = 0,
-  airframetype = eAirFrameTypes.None,
-  sernbr = "",
-  regnbr = "N909XJ",
-  maketype = eMakeTypes.None,
-  modelid = 0,
-  make = "",
-  origin = "",
-  destination = "",
-  //startdate = "09-01-2024", // 00:00:00",
-  //enddate = "09-02-2024", // 06:00:00",
-  aclist = null,
-  modlist = null,
-  lastactionstartdate = "",
-  lastactionenddate = ""
+  //aircraftid = 0,
+  //airframetype = eAirFrameTypes.None,
+  //sernbr = "",
+  //regnbr = "N909XJ",
+  maketype = eMakeTypes.BusinessJet,
+  //modelid = 0,
+  //make = "",
+  //origin = "",
+  //destination = "",
+  startdate = "11/11/2025", // 00:00:00",
+  enddate = "11/18/2025" // 06:00:00",
+  //aclist = null,
+  //modlist = null,
+  //lastactionstartdate = "",
+  //lastactionenddate = ""
 };
 
 timer.Reset();
 timer.Start();
 Console.WriteLine("\nSTART : {0} get aircraft flights list et: {1:hh\\:mm\\:ss}", DateTime.Now.ToLongTimeString(), timer.Elapsed);
 
-// returnValue = customerAPI.GetFromAPI(bearerToken, restURL, content4, "PUT").Result;
+returnValue = customerAPI.GetFromAPI(bearerToken, restURL, content4, "PUT").Result;
 responseAcFlightData aircraftFlightsList = new();
 
 if (returnValue is not null)
@@ -579,7 +589,7 @@ if (returnValue is not null)
   else
     Console.WriteLine("\nERROR : aircraft flights list {0} et: {1:hh\\:mm\\:ss}", aircraftFlightsList.responsestatus!.Trim(), timer.Elapsed);
 
-  Console.WriteLine("\nEND get aircraft flights list et: {0:hh\\:mm\\:ss}", timer.Elapsed);
+  Console.WriteLine("\nEND get aircraft flights {0} list et: {1:hh\\:mm\\:ss}", aircraftFlightsList.count.ToString(), timer.Elapsed);
 
 }
 
@@ -589,6 +599,55 @@ Console.WriteLine("\nEND : {0} get aircraft flights list et: {1:hh\\:mm\\:ss}", 
 
 returnValue = null;
 
+Console.WriteLine("\nHit Any Key to Continue");
+var inputCheck3 = Console.ReadKey();
+
+// get aircraft flights list example
+
+tmpString = string.Format(getNetjetsFlightList, accessToken.Trim());
+restURL = apiBase + tmpString;
+
+AcFlightDataOptions content9 = new()
+{
+  //aircraftid = 0,
+  //airframetype = eAirFrameTypes.None,
+  //maketype = eMakeTypes.BusinessJet,
+  //sernbr = "",
+  //regnbr = "N90CE",
+  //modelid = 0,
+  //make = "",
+  //origin = "",
+  //destination = "",
+  startdate = "11/11/2025", // 00:00:00",
+  enddate = "11/18/2025" // 06:00:00",
+};
+
+timer.Reset();
+timer.Start();
+Console.WriteLine("\nSTART : {0} get aircraft netjet flights list et: {1:hh\\:mm\\:ss}", DateTime.Now.ToLongTimeString(), timer.Elapsed);
+
+returnValue = customerAPI.GetFromAPI(bearerToken, restURL, content9, "PUT").Result;
+
+responseAcFlightData aircraftNetjetFlightsList = new();
+
+if (returnValue is not null)
+{
+  aircraftNetjetFlightsList = JsonSerializer.Deserialize<responseAcFlightData>(returnValue)!;
+
+  if (aircraftNetjetFlightsList.responsestatus!.ToUpper().Contains(@"SUCCESS"))
+    Console.WriteLine("\nRETURN aircraft netjet flights list {0} et: {1:hh\\:mm\\:ss}", returnValue.Trim(), timer.Elapsed);
+  else
+    Console.WriteLine("\nERROR : aircraft netjet flights list {0} et: {1:hh\\:mm\\:ss}", aircraftNetjetFlightsList.responsestatus!.Trim(), timer.Elapsed);
+
+  Console.WriteLine("\nEND get aircraft netjet flights {0} list et: {0:hh\\:mm\\:ss}", aircraftNetjetFlightsList.count.ToString(), timer.Elapsed);
+
+}
+
+timer.Stop();
+
+Console.WriteLine("\nEND : {0} get aircraft flights list et: {1:hh\\:mm\\:ss}", DateTime.Now.ToLongTimeString(), timer.Elapsed);
+
+returnValue = null;
 // get gulfstream export example
 
 tmpString = string.Format(getGulfstreamExport, accessToken.Trim());
@@ -689,8 +748,106 @@ timer.Stop();
 Console.WriteLine("\nEND : {0} getAllCompanyInfo PAGED et: {1:hh\\:mm\\:ss}", DateTime.Now.ToLongTimeString(), timer.Elapsed);
 
 returnValue = null;
+// get all company objects example
 
-// get copmpany list example
+tmpString = string.Format(getAllCompanyObjects, accessToken.Trim(), "0", "0");
+restURL = apiBase + tmpString;
+
+timer.Reset();
+timer.Start();
+
+CompObjectListOptions content8 = new()
+{
+  complist = [6328, 9951, 14995, 18535, 23044, 28345, 30149, 32027, 32331, 32584,
+              68826, 141335, 144424, 144652, 148776, 148954, 149480, 153776, 163302, 166522,
+              217885, 219048, 226588, 228462, 229999, 230939, 236369, 236742, 251526, 251903,
+              257851, 264126, 265939, 267113, 278427, 280145, 284384, 284416, 284844, 285491,
+              285812, 287517, 290950, 303592, 308590, 310432, 316926, 324954, 325445, 326054,
+              331563, 333669, 336507, 336554, 338057, 338069, 339483, 339564, 340274, 341576,
+              345995, 346052, 347965, 349702, 350537, 351104, 351842, 356892, 358910, 359695,
+              361069, 361241, 362581, 362748, 362911, 363572, 365157, 368523, 372506, 373442,
+              374522, 374843, 375209, 375428, 376214, 376214, 377261, 377506, 377736, 377737,
+              380546, 381200, 384732, 384813, 386678, 387195, 387465, 387683, 389468, 390223,
+              391096, 392610, 392797, 393325, 393350, 398700, 399472, 402505, 402915, 403363,
+              403451, 404072, 404519, 405309, 406023, 406526, 406886, 407144, 407937, 408771,
+              410902, 410925, 412438, 413515, 415099, 415230, 415393, 416193, 416693, 417339,
+              418332, 418686, 420271, 421772, 421880, 422229, 422660, 424230, 424986, 425644,
+              426337, 426376, 428639, 429591, 431602, 432404, 432471, 432472, 432936, 433190,
+              433377, 434685, 435415, 439841, 440011, 440715, 442122, 442462, 442563, 443679,
+              444023, 445360, 446176, 447200, 447418, 447617, 447769, 448720, 448794, 449182,
+              449253, 449843, 450779, 450898, 452104, 452935, 453220, 453344, 453994, 454755,
+              455130, 455176, 455319, 455323, 456902, 456961, 458022, 458941, 459105, 459656,
+              459838, 460401, 461077, 461174, 461176, 461178, 461622, 461625, 461796, 461865,
+              462538, 462725, 462918, 463006, 463761, 464513, 466274, 466363, 466863, 467434,
+              467537, 467549, 467579, 467603, 467790, 468192, 468762, 468797, 468817, 469052,
+              469226, 469577, 469778, 470383, 470954, 471053, 471121, 471282, 471288, 471535,
+              471579, 472348, 472928, 473116, 473217, 473284, 473918, 474505, 474843, 475274,
+              475911, 476131, 476173, 476605, 477432, 478112, 478293, 478394, 478650, 479363,
+              481033, 481313, 481856, 482409, 482826, 483112, 484087, 484382, 484960, 485158,
+              485498, 486273, 486300, 487007, 487348, 487551, 489148, 489171, 489642, 490197,
+              490368, 491492, 491566, 493966, 495147, 498048, 498049, 501545, 501982, 503310,
+              503322, 504560, 504765, 505271, 506833, 507930, 508540, 509439, 510645, 511423,
+              512244, 512375, 513151, 513290, 513372, 513638]
+};
+
+Console.WriteLine("\nSTART : {0} getAllCompanyObjects et: {1:hh\\:mm\\:ss}", DateTime.Now.ToLongTimeString(), timer.Elapsed);
+
+//returnValue = customerAPI.GetFromAPI(bearerToken, restURL, content8, "PUT").Result;
+responseAllCompanyObjects allCompanyObjects = new();
+
+if (returnValue is not null)
+{
+  allCompanyObjects = JsonSerializer.Deserialize<responseAllCompanyObjects>(returnValue)!;
+
+  if (allCompanyObjects.responsestatus!.ToUpper().Contains(@"SUCCESS"))
+    Console.WriteLine("\nRETURN getAllCompanyObjects {0} et: {1:hh\\:mm\\:ss}", returnValue.Trim(), timer.Elapsed);
+  else
+    Console.WriteLine("\nERROR : getAllCompanyObjects {0} et: {1:hh\\:mm\\:ss}", allCompanyObjects.responsestatus!.Trim(), timer.Elapsed);
+
+  Console.WriteLine("\nEND getAllCompanyObjects {0} et: {1:hh\\:mm\\:ss}", allCompanyObjects!.allcompanyobjects!.Count!.ToString(), timer.Elapsed);
+
+}
+
+timer.Stop();
+
+Console.WriteLine("\nEND : {0} getAllCompanyObjects et: {1:hh\\:mm\\:ss}", DateTime.Now.ToLongTimeString(), timer.Elapsed);
+
+Console.WriteLine("\nHit Any Key to Continue");
+var inputCheck2 = Console.ReadKey();
+
+returnValue = null;
+// get all company objects paged example
+
+tmpString = string.Format(getAllCompanyObjects, accessToken.Trim(), "1", "1000");
+restURL = apiBase + tmpString;
+
+timer.Reset();
+timer.Start();
+
+Console.WriteLine("\nSTART : {0} getAllCompanyObjects PAGED et: {1:hh\\:mm\\:ss}", DateTime.Now.ToLongTimeString(), timer.Elapsed);
+
+//returnValue = customerAPI.GetFromAPI(bearerToken, restURL, content8, "PUT").Result;
+responseAllCompanyObjects allCompanyObjectsPgd = new();
+
+if (returnValue is not null)
+{
+  allCompanyObjectsPgd = JsonSerializer.Deserialize<responseAllCompanyObjects>(returnValue)!;
+
+  if (allCompanyObjectsPgd.responsestatus!.ToUpper().Contains(@"SUCCESS"))
+    Console.WriteLine("\nRETURN getAllCompanyObjects PAGED {0} et: {1:hh\\:mm\\:ss}", returnValue.Trim(), timer.Elapsed);
+  else
+    Console.WriteLine("\nERROR : getAllCompanyObjects PAGED {0} et: {1:hh\\:mm\\:ss}", allCompanyObjectsPgd.responsestatus!.Trim(), timer.Elapsed);
+
+  Console.WriteLine("\nEND getAllCompanyObjects PAGED {0} et: {1:hh\\:mm\\:ss}", allCompanyObjectsPgd!.allcompanyobjects!.Count!.ToString(), timer.Elapsed);
+
+}
+
+timer.Stop();
+
+Console.WriteLine("\nEND : {0} getAllCompanyObjects PAGED et: {1:hh\\:mm\\:ss}", DateTime.Now.ToLongTimeString(), timer.Elapsed);
+
+returnValue = null;
+// get copmpany list example 
 
 tmpString = string.Format(getCompanyList, accessToken.Trim());
 restURL = apiBase + tmpString;
@@ -762,7 +919,7 @@ ContListOptions content2 = new()
   complist = null
 };
 
-// returnValue = customerAPI.GetFromAPI(bearerToken, restURL, content2, "PUT").Result;
+//returnValue = customerAPI.GetFromAPI(bearerToken, restURL, content2, "PUT").Result;
 responseContactList contactList = new();
 
 if (returnValue is not null)
