@@ -21,6 +21,13 @@ else
   Console.WriteLine("No arguments");
 }
 
+// Non-interactive empty-IN() verification harness. Usage: jtcTestClient emptyintest [live|test]
+if (args.Any(a => string.Equals(a, "emptyintest", StringComparison.OrdinalIgnoreCase)))
+{
+  string harnessEnv = args.Any(a => string.Equals(a, "test", StringComparison.OrdinalIgnoreCase)) ? "test" : "live";
+  Environment.Exit(EmptyInHarness.RunAsync(harnessEnv).GetAwaiter().GetResult());
+}
+
 Stopwatch timer = new Stopwatch();
 
 string accessToken = string.Empty;
