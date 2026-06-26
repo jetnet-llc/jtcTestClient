@@ -1,0 +1,4 @@
+#!/bin/sh
+# Git invokes this via sh; delegate the actual check to the PowerShell guard.
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$(git rev-parse --show-toplevel)/.githooks/check-secrets.ps1"
+exit $?
