@@ -91,8 +91,8 @@ var serializeOptions = new JsonSerializerOptions
 
 ApiUser loginUser = new()
 {
-  EmailAddress = @"demo@jetnet.com", // "demo@jetnet.com" "demo@jetnet.com" "demo@jetnet.com" "demo@jetnet.com"
-  Password = @"g846ii2v" // "g846ii2v" "g846ii2v" "g846ii2v" "g846ii2v"
+  EmailAddress = @"demo@jetnet.com",
+  Password = @"g846ii2v"
 };
 
 apiConnection customerAPI = new();
